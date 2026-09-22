@@ -63,10 +63,19 @@ public class ZombiesManager {
 				&& isPositionEmpty(Game.NUM_COLS, row);
 
 		if(canAdd) {
-			// TODO fill your code
+            ZombieList.addZombie(game, Game.NUM_COLS, row);
 		}
 		return canAdd;
 	}
 
-	// TODO fill your code
+    
+    public int getRemainingZombies() {
+        return this.remainingZombies;
+    }
+    
+    public boolean winCondition() {
+        return getRemainingZombies() == 0;
+    }
+    
+    // TODO a bunch of stuff
 }
