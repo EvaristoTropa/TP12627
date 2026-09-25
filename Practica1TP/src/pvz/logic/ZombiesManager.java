@@ -59,23 +59,47 @@ public class ZombiesManager {
 	}
 
 	public boolean addZombie(int row) {
+        Position pos = new Position(row, Game.NUM_COLS);
 		boolean canAdd = getRemainingZombies() > 0 && shouldAddZombie()
-				&& isPositionEmpty(Game.NUM_COLS, row);
+				&& isEmpty(pos);
 
 		if(canAdd) {
-            ZombieList.addZombie(game, Game.NUM_COLS, row);
+            Zombie z = new Zombie(pos, game);
+            zombies.add(z);
 		}
 		return canAdd;
 	}
 
     
     public int getRemainingZombies() {
-        return this.remainingZombies;
+        return remainingZombies;
     }
     
-    public boolean winCondition() {
-        return getRemainingZombies() == 0;
+    public boolean doZombiesReachedTheHouse() {
+        return zombies.anyInColumn(-1);
     }
     
-    // TODO a bunch of stuff
+    public void damageZombie(Position p, int damage) {
+        zombies.damage(p, damage);
+    }
+    
+    public String iconInPosition(Position p) {
+        return zombies.iconInPosition(p);
+    }
+    
+    public boolean isEmpty(Position p) {
+        return zombies.isEmpty(p);
+    }
+    
+    public void update() {
+        zombies.update();
+    }
+    
+    public boolean allZombiesWereKilled() {
+        return remainingZombies == 0;
+    }
+    
+    public void removeDead() {
+        zombies.removeDead();
+    }
 }
