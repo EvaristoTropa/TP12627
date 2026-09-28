@@ -1,17 +1,22 @@
 package pvz.logic.gameobjects;
 
-import pvz.logic.gameobjects.ZombieList
+import pvz.logic.Game;
+import pvz.logic.gameobjects.ZombieList;
 import pvz.utils.Position;
 import pvz.view.Messages;
 
 /**
- * Contains the properties of a basic zombie, as well as methods for individual instances.
+ * Definition of a basic zombie.
+ * 
+ * <p>Contains essential methods to handle individual instances and check their properties.
+ * 
+ * @author Rodrigo Ferrer López
 */
 
 public class Zombie {
     private Position position;
 	private Game game;
-	private int hp, lifetime;
+	private int hp, counter;
     private final int DAMAGE = 1, PERIOD = 2;
 	
 	public Zombie(Position position, Game game) {
@@ -20,47 +25,85 @@ public class Zombie {
 		this.hp = 5;
         this.counter = 0; // Used for calculating move cycles
 	}
+	
+	/**
+	 * Fetches a zombie's icon on the board.
+	 * 
+	 * @return a string with the zombie's icon showing its current health.
+	 */
     
     public String getIcon() {
-        return ZOMBIE_ICON.formatted(hp);
+        return Messages.ZOMBIE_ICON.formatted(hp);
     }
+    
+    /**
+     * Checks if a zombie is in a given position.
+     * 
+     * @param p Position to compare with
+     * 
+     * @return <code>true</code> if the zombie's position matches the argument.
+     */
     
     public boolean isInPosition(Position p) {
         return position.equals(p);
     }
     
+    /**
+     * Checks if a zombie is in the same row as a given position.
+     * 
+     * @param p Position to compare with
+     * 
+     * @return <code>true</code> if the zombie's position's row and the argument's row match.
+     */
+    
     public boolean isHorizontallyAligned(Position p) {
         return position.isHorizontallyAligned(p);
     }
+    
+    /**
+     * Checks if a zombie is in the same column as a given position.
+     * 
+     * @param p Position to compare with
+     * 
+     * @return <code>true</code> if the zombie's position's column and the argument's column match.
+     */
     
     public boolean isVerticallyAligned(Position p) {
         return position.isVerticallyAligned(p);
     }
     
+    /**
+     * Reduces a zombie's HP by a given amount.
+     * 
+     * @param damage Amount of damage the zombie takes
+     */
+    
     public void receiveAttack(int damage) {
         hp -= damage;
     }
     
-    private void attack(Peashooter target) {
-        target.receiveDamage(DAMAGE);
-    }
-    
-    private void attack(Sunflower target) {
-        target.receiveDamage(DAMAGE);
-    }
+    /**
+     * Executes a zombie's actions at the start of a cycle.
+     */
     
     public void update() {
-        Position targetPos = new Position(row, col - 1);
+        Position targetPos = new Position(position.row(), position.column() - 1);
         
-        if (isEmpty(targetPos))
+        if (game.isEmpty(targetPos))
         if (counter >= PERIOD) {
             position = targetPos;
             counter = 0;
         }
         
-        // TODO figure out how to check for plants in front of the zombie and damage them
+        // TODO use the game lists to check for objects
         counter++;
     }
+    
+    /**
+     * Checks if a zombie is currently considered alive by the game.
+     * 
+     * @return <code>true</code> if its HP is at least 1.
+     */
     
     public boolean isAlive() {
         return hp > 0;

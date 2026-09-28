@@ -2,6 +2,7 @@ package pvz.logic;
 
 import java.util.Random;
 
+import pvz.logic.Game;
 import pvz.control.Level;
 import pvz.logic.gameobjects.Zombie;
 import pvz.logic.gameobjects.ZombieList;
@@ -15,6 +16,7 @@ import pvz.logic.gameobjects.ZombieList;
  * {@link ZombieList}, and answering win/loss queries
  *
  */
+
 public class ZombiesManager {
 
 	private Game game;
@@ -40,6 +42,7 @@ public class ZombiesManager {
 	 * 
 	 * @return <code>true</code> if a zombie should be added to the game.
 	 */
+	
 	private boolean shouldAddZombie() {
 		return rand.nextDouble() < level.getZombieFrequency();
 	}
@@ -49,14 +52,29 @@ public class ZombiesManager {
 	 * 
 	 * @return a random row.
 	 */
+	
 	private int randomZombieRow() {
 		return rand.nextInt(Game.NUM_ROWS);
 	}
+	
+	/**
+	 * Tries to add a zombie with a randomly generated row.
+	 * 
+	 * @return <code>true</code> if the zombie was added.
+	 */
 	
 	public boolean addZombie() {
 		int row = randomZombieRow();
 		return addZombie(row);
 	}
+	
+	/**
+	 * Tries to add a zombie with a given row.
+	 * 
+	 * @param row Row to add the zombie to
+	 * 
+	 * @return <code>true</code> if the zombie was added.
+	 */
 
 	public boolean addZombie(int row) {
         Position pos = new Position(row, Game.NUM_COLS);
