@@ -1,6 +1,6 @@
-package utils;
+package pvz.utils;
 
-import pvz.logic.Game.NUM_COLS;
+import pvz.logic.Game;
 
 public class Position {
     private int row, col;
@@ -26,20 +26,21 @@ public class Position {
         return col == p.col;
     }
     
+    @Override
     public String toString() {
         return '(' + row + ", " + col + ')';
     }
     
     @Override
     public boolean equals(Object o) {
-        if (o.getClass() == Position.getClass())
-        ((Position) o).row.equals(this.row) && ((Position) o).col equals(this.col);
+        if (o.getClass() == Position.class)
+        return ((Position) o).row == this.row && ((Position) o).col == this.col;
         else
         return false;
     }
     
     @Override
     public int hashCode() {
-        return row * NUM_COLS + col;
+        return row * Game.NUM_COLS + col;
     }
 }

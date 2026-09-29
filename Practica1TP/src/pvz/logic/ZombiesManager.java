@@ -6,6 +6,7 @@ import pvz.logic.Game;
 import pvz.control.Level;
 import pvz.logic.gameobjects.Zombie;
 import pvz.logic.gameobjects.ZombieList;
+import pvz.utils.Position;
 
 /**
  * Manages the full lifecycle of zombies for a game session.
@@ -77,7 +78,7 @@ public class ZombiesManager {
 	 */
 
 	public boolean addZombie(int row) {
-        Position pos = new Position(row, Game.NUM_COLS);
+        Position pos = game.newZombiePosition(row);
 		boolean canAdd = getRemainingZombies() > 0 && shouldAddZombie()
 				&& isEmpty(pos);
 
@@ -87,35 +88,82 @@ public class ZombiesManager {
 		}
 		return canAdd;
 	}
-
+	
+	/**
+	 * Fetches the amount of remaining zombies in the game.
+	 * 
+	 * @return the number of zombies that are yet to be spawned and killed.
+	 */
     
     public int getRemainingZombies() {
         return remainingZombies;
     }
     
+    /**
+	 * Checks if the game's loss condition has been fulfilled.
+	 * 
+	 * @return <code>true</code> if a zombie has crossed the left border of the board.
+	 */
+    
     public boolean doZombiesReachedTheHouse() {
         return zombies.anyInColumn(-1);
     }
+    
+    /**
+	 * Damages a zombie in a given position by a given amount.
+	 * 
+	 * @param p Position to check, damage Damage to deal
+	 */
     
     public void damageZombie(Position p, int damage) {
         zombies.damage(p, damage);
     }
     
+    /**
+	 * Fetches the icon of a zombie in a given position.
+	 * 
+	 * @param p Position to check
+	 * 
+	 * @return the zombie's icon if found, an empty string otherwise.
+	 */
+    
     public String iconInPosition(Position p) {
         return zombies.iconInPosition(p);
     }
+    
+    /**
+	 * Checks if there are no zombies in a given position.
+	 * 
+	 * @param p Position to check
+	 * 
+	 * @return <code>true</code> if no zombie has been found in that position.
+	 */
     
     public boolean isEmpty(Position p) {
         return zombies.isEmpty(p);
     }
     
+    /**
+	 * Updates all zombies in the list.
+	 */
+    
     public void update() {
         zombies.update();
     }
     
+    /**
+	 * Checks if the game's win condition has been fulfilled.
+	 * 
+	 * @return <code>true</code> if all zombies have been spawned and killed.
+	 */
+    
     public boolean allZombiesWereKilled() {
         return remainingZombies == 0;
     }
+    
+    /**
+	 * Removes all dead zombies in the list.
+	 */
     
     public void removeDead() {
         zombies.removeDead();
