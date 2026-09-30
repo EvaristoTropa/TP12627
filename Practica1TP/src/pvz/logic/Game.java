@@ -1,10 +1,22 @@
 package pvz.logic;
 
+import java.util.Random;
+
 import pvz.control.Level;
 import pvz.utils.Position;
 import pvz.logic.ZombiesManager;
 import pvz.logic.gameobjects.PeashooterList;
 import pvz.logic.gameobjects.SunflowerList;
+import pvz.logic.gameobjects.Peashooter;
+import pvz.logic.gameobjects.Sunflower;
+
+/**
+ * The singular most important component of the game.
+ * 
+ * Handles the main logic framework, acting as a hub for other components.
+ * 
+ * @author Rodrigo Ferrer López
+ */
 
 public class Game {
 	private long seed;
@@ -14,6 +26,7 @@ public class Game {
 	private SunflowerList sunflowerList;
 	private int cycles;
 	private int coins;
+	private Random rand;
 	public static final int NUM_ROWS = 4;
 	public static final int NUM_COLS = 8;
 	public static final int INITIAL_COINS = 50;
@@ -21,6 +34,9 @@ public class Game {
 	public Game (long seed, Level level) {
 		this.seed = seed;
 		this.level = level;
+		this.zombieManager = new ZombiesManager(this, level, rand);
+		this.peashooterList = new PeashooterList();
+		this.sunflowerList = new SunflowerList();
 		this.cycles = 0;
 		this.coins = INITIAL_COINS;
 	}
@@ -30,7 +46,10 @@ public class Game {
 	}
 	
 	public boolean checkGameObject(String objectName) {
-		// TODO
+		return objectName == "peashooter" || objectName == "p"
+		|| objectName == "PEASHOOTER" || objectName == "P"
+		|| objectName == "sunflower" || objectName == "s"
+		|| objectName == "SUNFLOWER" || objectName == "S";
 		return true;
 	}
 	
@@ -55,24 +74,44 @@ public class Game {
 	}
 	
 	public boolean playerQuits() {
-		// TODO
-		return true;
+		return cycles == -1;
 	}
 	
 	public void quit() {
-		// TODO
+		cycles = -1;
 	}
 	
 	public void update() {
-		// TODO
+		sunflowerList.update();
+		peashooterList.update();
+		zombieManager.removeDead();
+		zombieManager.update();
+		peashooterList.removeDead();
+		sunflowerList.removeDead();
+		cycles++;
 	}
 	
 	public void reset() {
-		// TODO
+		zombieManager = new ZombiesManager(this, level, rand);
+		peashooterList = new PeashooterList();
+		sunflowerList = new SunflowerList();
+		cycles = 0;
+		coins = INITIAL_COINS;
 	}
 	
 	public void addGameObject(String plantType,  Position position) {
-		// TODO
+		if (plantType == "peashooter" || plantType == "p"
+		|| plantType == "PEASHOOTER" || plantType == "P"
+		&& coins >= Peashooter.COST) {
+			peashooterList.add(new Peashooter(position, this));
+			coins -= Peashooter.COST;
+		}
+		else if (plantType == "sunflower" || plantType == "s"
+		|| plantType == "SUNFLOWER" || plantType == "S"
+		&& coins >= Sunflower.COST) {
+			sunflowerList.add(new Sunflower(position, this));
+			coins -= Sunflower.COST;
+		}
 	}
 	
 	public void generateCoins(int amount) {

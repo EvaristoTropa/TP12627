@@ -1,7 +1,6 @@
 package pvz.logic.gameobjects;
 
 import pvz.logic.Game;
-import pvz.logic.gameobjects.ZombieList;
 import pvz.utils.Position;
 import pvz.view.Messages;
 
@@ -88,14 +87,13 @@ public class Zombie {
     
     public void update() {
         Position targetPos = new Position(position.row(), position.column() - 1);
-        
         if (game.isEmpty(targetPos))
         if (counter >= PERIOD) {
             position = targetPos;
             counter = 0;
         }
-        
-        // TODO use the game lists to check for objects
+        else
+        	game.attackPlant(targetPos, DAMAGE);
         counter++;
     }
     

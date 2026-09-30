@@ -33,7 +33,7 @@ public class Position {
     
     @Override
     public boolean equals(Object o) {
-        if (o.getClass() == Position.class)
+        if (o.getClass() == this.getClass())
         return ((Position) o).row == this.row && ((Position) o).col == this.col;
         else
         return false;

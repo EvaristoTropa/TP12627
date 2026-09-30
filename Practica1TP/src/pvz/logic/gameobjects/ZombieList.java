@@ -3,7 +3,7 @@ package pvz.logic.gameobjects;
 import pvz.utils.Position;
 
 /**
- * Contains a list of all zombies in the game and methods to handle it.
+ * Contains a list of all zombies ({@link Zombie}) in the game and methods to handle it.
  * 
  * @author Rodrigo Ferrer López
 */
