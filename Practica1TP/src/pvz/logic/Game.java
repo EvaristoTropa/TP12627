@@ -13,7 +13,7 @@ import pvz.logic.gameobjects.Sunflower;
 /**
  * The singular most important component of the game.
  * 
- * Handles the main logic framework, acting as a hub for other components.
+ * <p>Handles the main logic framework, acting as a hub for other components.
  * 
  * @author Rodrigo Ferrer López
  */
@@ -21,12 +21,12 @@ import pvz.logic.gameobjects.Sunflower;
 public class Game {
 	private long seed;
 	private Level level;
+	private Random rand;
 	private ZombiesManager zombieManager;
 	private PeashooterList peashooterList;
 	private SunflowerList sunflowerList;
 	private int cycles;
 	private int coins;
-	private Random rand;
 	public static final int NUM_ROWS = 4;
 	public static final int NUM_COLS = 8;
 	public static final int INITIAL_COINS = 50;
@@ -34,6 +34,7 @@ public class Game {
 	public Game (long seed, Level level) {
 		this.seed = seed;
 		this.level = level;
+		this.rand = new Random(seed);
 		this.zombieManager = new ZombiesManager(this, level, rand);
 		this.peashooterList = new PeashooterList();
 		this.sunflowerList = new SunflowerList();
@@ -46,10 +47,10 @@ public class Game {
 	}
 	
 	public boolean checkGameObject(String objectName) {
-		return objectName == "peashooter" || objectName == "p"
-		|| objectName == "PEASHOOTER" || objectName == "P"
-		|| objectName == "sunflower" || objectName == "s"
-		|| objectName == "SUNFLOWER" || objectName == "S";
+		return objectName.equalsIgnoreCase("peashooter")
+		|| objectName.equalsIgnoreCase("p")
+		|| objectName.equalsIgnoreCase("sunflower")
+		|| objectName.equalsIgnoreCase("s");
 		return true;
 	}
 	
@@ -100,17 +101,19 @@ public class Game {
 	}
 	
 	public void addGameObject(String plantType,  Position position) {
-		if (plantType == "peashooter" || plantType == "p"
-		|| plantType == "PEASHOOTER" || plantType == "P"
-		&& coins >= Peashooter.COST) {
-			peashooterList.add(new Peashooter(position, this));
-			coins -= Peashooter.COST;
-		}
-		else if (plantType == "sunflower" || plantType == "s"
-		|| plantType == "SUNFLOWER" || plantType == "S"
-		&& coins >= Sunflower.COST) {
-			sunflowerList.add(new Sunflower(position, this));
-			coins -= Sunflower.COST;
+		if (!isEmpty(position)) {
+			if (plantType.equalsIgnoreCase("peashooter")
+					|| plantType.equalsIgnoreCase("p")
+					&& coins >= Peashooter.COST) {
+						peashooterList.add(new Peashooter(position, this));
+						coins -= Peashooter.COST;
+				}
+			else if (plantType.equalsIgnoreCase("sunflower")
+					|| plantType.equalsIgnoreCase("s")
+					&& coins >= Sunflower.COST) {
+						sunflowerList.add(new Sunflower(position, this));
+						coins -= Sunflower.COST;
+					}
 		}
 	}
 	

@@ -16,6 +16,7 @@ import pvz.utils.Position;
  * delegating per-cycle updates and dead-removal to the underlying
  * {@link ZombieList}, and answering win/loss queries
  *
+ * @author Rodrigo Ferrer López (filled code);
  */
 
 public class ZombiesManager {
