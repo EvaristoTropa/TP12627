@@ -101,9 +101,9 @@ public class ZombiesManager {
     }
     
     /**
-	 * Checks if the game's loss condition has been fulfilled.
+	 * Checks if any zombies got past the lawn (the board).
 	 * 
-	 * @return <code>true</code> if a zombie has crossed the left border of the board.
+	 * @return <code>true</code> if a zombie has crossed the left boundary of the board.
 	 */
     
     public boolean doZombiesReachedTheHouse() {
@@ -153,9 +153,9 @@ public class ZombiesManager {
     }
     
     /**
-	 * Checks if the game's win condition has been fulfilled.
+	 * Checks if all zombies have been spawned and killed.
 	 * 
-	 * @return <code>true</code> if all zombies have been spawned and killed.
+	 * @return <code>true</code> if no zombies remain in the game.
 	 */
     
     public boolean allZombiesWereKilled() {

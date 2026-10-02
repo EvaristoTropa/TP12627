@@ -27,6 +27,7 @@ public class Game {
 	private SunflowerList sunflowerList;
 	private int cycles;
 	private int coins;
+	private boolean quit;
 	public static final int NUM_ROWS = 4;
 	public static final int NUM_COLS = 8;
 	public static final int INITIAL_COINS = 50;
@@ -40,49 +41,108 @@ public class Game {
 		this.sunflowerList = new SunflowerList();
 		this.cycles = 0;
 		this.coins = INITIAL_COINS;
+		this.quit = false;
 	}
+	
+	/**
+     * Converts a position to string format.
+     * 
+     * @return a string containing the position's row and column.
+     */
 	
 	public String positionToString(Position position) {
 		return position.toString();
 	}
+	
+	/**
+	 * Checks if an object name is valid to be added to the board by the player.
+	 * 
+	 * @param objectName Name to check
+	 * 
+	 * @return <code>true</code> if the object's name is in the whitelist.
+	 */
 	
 	public boolean checkGameObject(String objectName) {
 		return objectName.equalsIgnoreCase("peashooter")
 		|| objectName.equalsIgnoreCase("p")
 		|| objectName.equalsIgnoreCase("sunflower")
 		|| objectName.equalsIgnoreCase("s");
-		return true;
 	}
+	
+	/**
+	 * Fetches the game's cycle count.
+	 * 
+	 * @return the number of cycles that have currently passed.
+	 */
 	
 	public int getCycles() {
 		return cycles;
 	}
 	
+	/**
+	 * Fetches the game's coin count.
+	 * 
+	 * @return the number of sun coins the player currently has.
+	 */
+	
 	public int getCoins() {
 		return coins;
 	}
+	
+	/**
+	 * Fetches how many zombies remain in the game.
+	 * 
+	 * @return the number of zombies to be spawned and killed.
+	 */
 	
 	public int getRemainingZombies() {
 		return zombieManager.getRemainingZombies();
 	}
 	
+	/**
+	 * Checks if the game is considered finished.
+	 * 
+	 * @return <code>true</code> if the player wins, loses or quits.
+	 */
+	
 	public boolean hasGameFinished() {
 		return playerWins() || zombieManager.doZombiesReachedTheHouse() || playerQuits();
 	}
+	
+	/**
+	 * Checks if the game is considered won.
+	 * 
+	 * @return <code>true</code> if the player manages to kill every zombie.
+	 */
 	
 	public boolean playerWins() {
 		return zombieManager.allZombiesWereKilled();
 	}
 	
+	/**
+	 * Checks if the game is considered forfeit.
+	 * 
+	 * @return <code>true</code> if the game's quit flag is on.
+	 */
+	
 	public boolean playerQuits() {
-		return cycles == -1;
+		return quit;
 	}
+	
+	/**
+	 * Activates a flag which signals that the game has been quit.
+	 */
 	
 	public void quit() {
-		cycles = -1;
+		quit = true;
 	}
 	
+	/**
+	 * Executes all actions that happen every cycle.
+	 */
+	
 	public void update() {
+		zombieManager.addZombie();
 		sunflowerList.update();
 		peashooterList.update();
 		zombieManager.removeDead();
@@ -92,6 +152,10 @@ public class Game {
 		cycles++;
 	}
 	
+	/**
+	 * Rewinds the game to its initial state.
+	 */
+	
 	public void reset() {
 		zombieManager = new ZombiesManager(this, level, rand);
 		peashooterList = new PeashooterList();
@@ -100,8 +164,14 @@ public class Game {
 		coins = INITIAL_COINS;
 	}
 	
+	/**
+	 * If possible, adds a given object to the board at a given position and deducts coins accordingly.
+	 * 
+	 * @param plantType Plant to spawn, position Position of the new plant
+	 */
+	
 	public void addGameObject(String plantType,  Position position) {
-		if (!isEmpty(position)) {
+		if (!isEmpty(position) && isInsideBoard(position)) {
 			if (plantType.equalsIgnoreCase("peashooter")
 					|| plantType.equalsIgnoreCase("p")
 					&& coins >= Peashooter.COST) {
@@ -117,26 +187,68 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * Adds a given amount of coins to the counter.
+	 * 
+	 * @param amount Coins earned
+	 */
+	
 	public void generateCoins(int amount) {
 		coins += amount;
 	}
 	
+	/**
+	 * Looks for a zombie in a given position and damages it by a given amount if found.
+	 * 
+	 * @param p Position to check, damage Damage to deal
+	 */
+	
 	public void attackZombie(Position p, int damage) {
 		zombieManager.damageZombie(p, damage);
 	}
+	
+	/**
+	 * Looks for a plant in a given position and damages it by a given amount if found.
+	 * 
+	 * @param p Position to check, damage Damage to deal
+	 */
 	
 	public void attackPlant(Position p, int damage) {
 		peashooterList.receiveDamage(p, damage);
 		sunflowerList.receiveDamage(p, damage);
 	}
 	
+	/**
+	 * Checks if a given position contains no objects in it.
+	 * 
+	 * @param p Position to check
+	 * 
+	 * @return <code>true</code> if no objects were found there.
+	 */
+	
 	public boolean isEmpty(Position p) {
 		return zombieManager.isEmpty(p) && peashooterList.isEmpty(p) && sunflowerList.isEmpty(p);
 	}
 	
+	/**
+	 * Generates the position where a new zombie will spawn.
+	 * 
+	 * @param row Spawn row
+	 * 
+	 * @return the zombie's spawn position.
+	 */
+	
 	public Position newZombiePosition(int row) {
 		return new Position(row, NUM_COLS);
 	}
+	
+	/**
+	 * Checks if a position is considered inside the board by the game.
+	 * 
+	 * @param p Position to check
+	 * 
+	 * @return <code>true</code> if both the position's row and column are within the bounds set by the game.
+	 */
 	
 	public boolean isInsideBoard(Position p) {
 		return p.row() >= 0 && p.row() < NUM_ROWS && p.column() >= 0 && p.column() < NUM_COLS;
