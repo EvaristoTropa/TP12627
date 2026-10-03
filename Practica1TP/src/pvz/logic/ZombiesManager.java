@@ -79,13 +79,14 @@ public class ZombiesManager {
 	 */
 
 	public boolean addZombie(int row) {
-        Position pos = game.newZombiePosition(row);
+        Position pos = Game.newZombiePosition(row);
 		boolean canAdd = getRemainingZombies() > 0 && shouldAddZombie()
 				&& isEmpty(pos);
 
 		if(canAdd) {
             Zombie z = new Zombie(pos, game);
             zombies.add(z);
+            remainingZombies--;
 		}
 		return canAdd;
 	}
@@ -93,7 +94,7 @@ public class ZombiesManager {
 	/**
 	 * Fetches the amount of remaining zombies in the game.
 	 * 
-	 * @return the number of zombies that are yet to be spawned and killed.
+	 * @return the number of zombies that are yet to be spawned.
 	 */
     
     public int getRemainingZombies() {
@@ -159,7 +160,7 @@ public class ZombiesManager {
 	 */
     
     public boolean allZombiesWereKilled() {
-        return remainingZombies == 0;
+        return remainingZombies == 0 && zombies.size() == 0;
     }
     
     /**
