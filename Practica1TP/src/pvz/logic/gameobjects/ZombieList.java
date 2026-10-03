@@ -11,7 +11,7 @@ import pvz.utils.Position;
 public class ZombieList {
     private int numberOfZombies;
     private final Zombie[] zombies;
-    private final int MAX_ZOMBIES = 100;
+    private static final int MAX_ZOMBIES = 100;
     
     public ZombieList() {
         this.numberOfZombies = 0;
@@ -79,7 +79,7 @@ public class ZombieList {
 	 * 
 	 * @param p Position to search, damage Damage to deal
 	 * 
-	 * @return the list's size.
+	 * @return <code>true</code> if the zombie was found.
 	 */
     
     public boolean damage(Position p, int damage) {
@@ -92,7 +92,7 @@ public class ZombieList {
     /**
 	 * Checks if a position doesn't have any zombies.
 	 * 
-	 * @return the list's size.
+	 * @return <code>true</code> if no zombies were found there.
 	 */
     
     public boolean isEmpty(Position p) {

@@ -45,13 +45,22 @@ public class Game {
 	}
 	
 	/**
-     * Converts a position to string format.
+     * Fetches the icon in a given position.
      * 
-     * @return a string containing the position's row and column.
+     * @param position Position to check
+     * 
+     * @return a string currently representing that position on the board.
      */
 	
 	public String positionToString(Position position) {
-		return position.toString();
+		if (!zombieManager.isEmpty(position))
+			return zombieManager.iconInPosition(position);
+		else if (!peashooterList.isEmpty(position))
+			return peashooterList.iconInPosition(position);
+		else if (!sunflowerList.isEmpty(position))
+			return sunflowerList.iconInPosition(position);
+		else
+			return "";
 	}
 	
 	/**
@@ -63,10 +72,10 @@ public class Game {
 	 */
 	
 	public boolean checkGameObject(String objectName) {
-		return objectName.equalsIgnoreCase("peashooter")
-		|| objectName.equalsIgnoreCase("p")
-		|| objectName.equalsIgnoreCase("sunflower")
-		|| objectName.equalsIgnoreCase("s");
+		return objectName.equalsIgnoreCase(Peashooter.shortName())
+		|| objectName.equalsIgnoreCase(Peashooter.longName())
+		|| objectName.equalsIgnoreCase(Sunflower.shortName())
+		|| objectName.equalsIgnoreCase(Sunflower.longName());
 	}
 	
 	/**
@@ -92,7 +101,7 @@ public class Game {
 	/**
 	 * Fetches how many zombies remain in the game.
 	 * 
-	 * @return the number of zombies to be spawned and killed.
+	 * @return the number of zombies to be spawned.
 	 */
 	
 	public int getRemainingZombies() {
@@ -145,8 +154,8 @@ public class Game {
 		zombieManager.addZombie();
 		sunflowerList.update();
 		peashooterList.update();
-		zombieManager.removeDead();
 		zombieManager.update();
+		zombieManager.removeDead();
 		peashooterList.removeDead();
 		sunflowerList.removeDead();
 		cycles++;
@@ -157,6 +166,7 @@ public class Game {
 	 */
 	
 	public void reset() {
+		rand = new Random(seed);
 		zombieManager = new ZombiesManager(this, level, rand);
 		peashooterList = new PeashooterList();
 		sunflowerList = new SunflowerList();
@@ -172,14 +182,14 @@ public class Game {
 	
 	public void addGameObject(String plantType,  Position position) {
 		if (!isEmpty(position) && isInsideBoard(position)) {
-			if (plantType.equalsIgnoreCase("peashooter")
-					|| plantType.equalsIgnoreCase("p")
+			if (plantType.equalsIgnoreCase(Peashooter.shortName())
+					|| plantType.equalsIgnoreCase(Peashooter.longName())
 					&& coins >= Peashooter.COST) {
 						peashooterList.add(new Peashooter(position, this));
 						coins -= Peashooter.COST;
 				}
-			else if (plantType.equalsIgnoreCase("sunflower")
-					|| plantType.equalsIgnoreCase("s")
+			else if (plantType.equalsIgnoreCase(Sunflower.shortName())
+					|| plantType.equalsIgnoreCase(Sunflower.longName())
 					&& coins >= Sunflower.COST) {
 						sunflowerList.add(new Sunflower(position, this));
 						coins -= Sunflower.COST;
@@ -238,7 +248,7 @@ public class Game {
 	 * @return the zombie's spawn position.
 	 */
 	
-	public Position newZombiePosition(int row) {
+	public static Position newZombiePosition(int row) {
 		return new Position(row, NUM_COLS);
 	}
 	

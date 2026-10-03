@@ -16,12 +16,12 @@ public class Zombie {
     private Position position;
 	private Game game;
 	private int hp, counter;
-    private final int DAMAGE = 1, PERIOD = 2;
+    private static final int DAMAGE = 1, PERIOD = 2, ENDURANCE = 5;
 	
 	public Zombie(Position position, Game game) {
 		this.position = position;
 		this.game = game;
-		this.hp = 5;
+		this.hp = ENDURANCE;
         this.counter = 0; // Used for calculating move cycles
 	}
 	
@@ -86,6 +86,8 @@ public class Zombie {
      */
     
     public void update() {
+    	if (isAlive())
+    	{
         Position targetPos = new Position(position.row(), position.column() - 1);
         if (game.isEmpty(targetPos))
         if (counter >= PERIOD) {
@@ -95,6 +97,7 @@ public class Zombie {
         else
         	game.attackPlant(targetPos, DAMAGE);
         counter++;
+    	}
     }
     
     /**
@@ -106,5 +109,4 @@ public class Zombie {
     public boolean isAlive() {
         return hp > 0;
     }
-    
 }
