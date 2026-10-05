@@ -86,17 +86,15 @@ public class Zombie {
      */
     
     public void update() {
-    	if (isAlive())
-    	{
-        Position targetPos = new Position(position.row(), position.column() - 1);
-        if (game.isEmpty(targetPos))
-        if (counter >= PERIOD) {
-            position = targetPos;
-            counter = 0;
-        }
-        else
-        	game.attackPlant(targetPos, DAMAGE);
-        counter++;
+    	if (isAlive()) {
+    		Position targetPos = new Position(position.row(), position.column() - 1);
+    		if (game.isEmpty(targetPos) && counter >= PERIOD) {
+    			position = targetPos;
+    			counter = 0;
+    		}
+    		else
+    			game.attackPlant(targetPos, DAMAGE);
+    		counter++;
     	}
     }
     

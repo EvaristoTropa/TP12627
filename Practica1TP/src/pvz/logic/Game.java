@@ -4,7 +4,6 @@ import java.util.Random;
 
 import pvz.control.Level;
 import pvz.utils.Position;
-import pvz.logic.ZombiesManager;
 import pvz.logic.gameobjects.PeashooterList;
 import pvz.logic.gameobjects.SunflowerList;
 import pvz.logic.gameobjects.Peashooter;
@@ -151,6 +150,7 @@ public class Game {
 	 */
 	
 	public void update() {
+		cycles++;
 		zombieManager.addZombie();
 		sunflowerList.update();
 		peashooterList.update();
@@ -158,7 +158,6 @@ public class Game {
 		zombieManager.removeDead();
 		peashooterList.removeDead();
 		sunflowerList.removeDead();
-		cycles++;
 	}
 	
 	/**
@@ -172,6 +171,7 @@ public class Game {
 		sunflowerList = new SunflowerList();
 		cycles = 0;
 		coins = INITIAL_COINS;
+		quit = false;
 	}
 	
 	/**
@@ -181,15 +181,15 @@ public class Game {
 	 */
 	
 	public void addGameObject(String plantType,  Position position) {
-		if (!isEmpty(position) && isInsideBoard(position)) {
-			if (plantType.equalsIgnoreCase(Peashooter.shortName())
-					|| plantType.equalsIgnoreCase(Peashooter.longName())
+		if (isEmpty(position) && isInsideBoard(position)) {
+			if ((plantType.equalsIgnoreCase(Peashooter.shortName())
+					|| plantType.equalsIgnoreCase(Peashooter.longName()))
 					&& coins >= Peashooter.COST) {
 						peashooterList.add(new Peashooter(position, this));
 						coins -= Peashooter.COST;
 				}
-			else if (plantType.equalsIgnoreCase(Sunflower.shortName())
-					|| plantType.equalsIgnoreCase(Sunflower.longName())
+			else if ((plantType.equalsIgnoreCase(Sunflower.shortName())
+					|| plantType.equalsIgnoreCase(Sunflower.longName()))
 					&& coins >= Sunflower.COST) {
 						sunflowerList.add(new Sunflower(position, this));
 						coins -= Sunflower.COST;
@@ -238,6 +238,18 @@ public class Game {
 	
 	public boolean isEmpty(Position p) {
 		return zombieManager.isEmpty(p) && peashooterList.isEmpty(p) && sunflowerList.isEmpty(p);
+	}
+	
+	/**
+	 * Checks if a given position contains a zombie in it.
+	 * 
+	 * @param p Position to check
+	 * 
+	 * @return <code>true</code> if a zombie was found there.
+	 */
+	
+	public boolean containsZombie(Position p) {
+		return !zombieManager.isEmpty(p);
 	}
 	
 	/**
