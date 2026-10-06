@@ -90,10 +90,10 @@ public class Zombie {
     		Position targetPos = new Position(position.row(), position.column() - 1);
     		if (game.isEmpty(targetPos) && counter >= PERIOD) {
     			position = targetPos;
+    			targetPos = new Position(position.row(), position.column() - 1);
     			counter = 0;
     		}
-    		else
-    			game.attackPlant(targetPos, DAMAGE);
+    		game.attackPlant(targetPos, DAMAGE);
     		counter++;
     	}
     }
