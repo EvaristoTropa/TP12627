@@ -19,15 +19,10 @@ import pvz.utils.Position;
  */
 
 public class ZombiesManager {
-
 	private Game game;
-
 	private Level level;
-
 	private Random rand;
-
 	private int remainingZombies;
-
 	private ZombieList zombies;
 
 	public ZombiesManager(Game game, Level level, Random rand) {
@@ -49,7 +44,7 @@ public class ZombiesManager {
 	}
 	
 	/**
-	 * Return a random row within the board limits.
+	 * Generates a random row within the board limits.
 	 * 
 	 * @return a random row.
 	 */

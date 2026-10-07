@@ -52,12 +52,12 @@ public class Game {
      */
 	
 	public String positionToString(Position position) {
-		if (!zombieManager.isEmpty(position))
-			return zombieManager.iconInPosition(position);
+		if (!sunflowerList.isEmpty(position))
+			return sunflowerList.iconInPosition(position);
 		else if (!peashooterList.isEmpty(position))
 			return peashooterList.iconInPosition(position);
-		else if (!sunflowerList.isEmpty(position))
-			return sunflowerList.iconInPosition(position);
+		else if (!zombieManager.isEmpty(position))
+			return zombieManager.iconInPosition(position);
 		else
 			return "";
 	}
@@ -155,9 +155,9 @@ public class Game {
 		sunflowerList.update();
 		peashooterList.update();
 		zombieManager.update();
-		zombieManager.removeDead();
-		peashooterList.removeDead();
 		sunflowerList.removeDead();
+		peashooterList.removeDead();
+		zombieManager.removeDead();
 	}
 	
 	/**
@@ -261,6 +261,8 @@ public class Game {
 	 */
 	
 	public static Position newZombiePosition(int row) {
+		if (row < 0 || row >= NUM_ROWS)
+			row = 0;
 		return new Position(row, NUM_COLS);
 	}
 	
@@ -273,6 +275,7 @@ public class Game {
 	 */
 	
 	public boolean isInsideBoard(Position p) {
-		return p.row() >= 0 && p.row() < NUM_ROWS && p.column() >= 0 && p.column() < NUM_COLS;
+		return p.row() >= 0 && p.row() < NUM_ROWS
+		&& p.column() >= 0 && p.column() < NUM_COLS;
 	}
 }

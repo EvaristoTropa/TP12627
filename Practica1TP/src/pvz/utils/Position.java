@@ -1,7 +1,5 @@
 package pvz.utils;
 
-import pvz.logic.Game;
-
 /**
  * Basic 2D board position class with useful methods for other classes.
  * 
@@ -95,6 +93,9 @@ public class Position {
     
     @Override
     public int hashCode() {
-        return row * Game.NUM_COLS + col;
+        int hash = 17;
+        hash = ((hash + col) << 5) - (hash + col);
+        hash = ((hash + row) << 5) - (hash + row);
+        return hash;
     }
 }

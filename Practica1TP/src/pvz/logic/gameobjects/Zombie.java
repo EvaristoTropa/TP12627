@@ -22,7 +22,7 @@ public class Zombie {
 		this.position = position;
 		this.game = game;
 		this.hp = ENDURANCE;
-        this.counter = 0; // Used for calculating move cycles
+        this.counter = 0;
 	}
 	
 	/**
@@ -93,6 +93,7 @@ public class Zombie {
     			targetPos = new Position(position.row(), position.column() - 1);
     			counter = 0;
     		}
+    		if (!game.isEmpty(targetPos))
     		game.attackPlant(targetPos, DAMAGE);
     		counter++;
     	}
