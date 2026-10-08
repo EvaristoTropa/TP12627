@@ -41,11 +41,11 @@ public class Peashooter {
 	
 	
 	
-	public String shortName() {
+	public static String shortName() {
 		return shortn;
 	}
 	
-	public String longName() {
+	public static String longName() {
 		return longn;
 	}
 	
