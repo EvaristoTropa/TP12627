@@ -1,6 +1,7 @@
 package pvz.logic.gameobjects;
 
 import pvz.utils.Position;
+import pvz.view.Messages;
 import pvz.logic.Game;
 
 public class Peashooter {
@@ -10,7 +11,7 @@ public class Peashooter {
 	private int hp;
 	private int cooldown;
 	private static final int DAMAGE = 1, FRECUENCY = 1, ENDURANCE = 3;
-	public static final int COST = 50;
+	private static final String shortn = "p", longn = "peashooter";
 	
 	private void attack() {
 		
@@ -27,12 +28,25 @@ public class Peashooter {
 		
 	}
 	
+	
+	public static final int COST = 50;
+	
 	public Peashooter(Position pos, Game game) {
 		
 		this.pos = pos;
 		this.game = game;
 		this.cooldown = 0;
 		this.hp = ENDURANCE;
+	}
+	
+	
+	
+	public String shortName() {
+		return shortn;
+	}
+	
+	public String longName() {
+		return longn;
 	}
 	
 	public void update() {
@@ -59,5 +73,10 @@ public class Peashooter {
 	public boolean dead() {
 
 		return hp <= 0;
+	}
+	
+public String getIcon() {
+		
+		return Messages.PEASHOOTER_ICON.formatted(hp);
 	}
 }

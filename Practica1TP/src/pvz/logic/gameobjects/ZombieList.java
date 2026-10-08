@@ -86,7 +86,7 @@ public class ZombieList {
     	int i = search(p);
     	if (i != -1)
         zombies[i].receiveAttack(damage);
-        return i < numberOfZombies;
+        return i == -1;
     }
     
     /**
