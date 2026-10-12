@@ -181,29 +181,36 @@ public class Game {
 	 * @param plantType Plant to spawn, position Position of the new plant
 	 */
 	
-	public String addGameObject(String plantType,  Position position) {
-		if (isEmpty(position) && isInsideBoard(position)) {
-			if ((plantType.equalsIgnoreCase(Peashooter.shortName())
-					|| plantType.equalsIgnoreCase(Peashooter.longName()))
-					&& coins >= Peashooter.COST) {
-						peashooterList.add(new Peashooter(position, this));
-						coins -= Peashooter.COST;
-						return null;
-			}
-			else if ((plantType.equalsIgnoreCase(Sunflower.shortName())
-					|| plantType.equalsIgnoreCase(Sunflower.longName()))
-					&& coins >= Sunflower.COST) {
-						sunflowerList.add(new Sunflower(position, this));
-						coins -= Sunflower.COST;
-						return null;
-			}else {
-				
-				if(coins<Peashooter.COST) {return Messages.INVALID_GAME_OBJECT;}
-				else {return Messages.NOT_ENOUGH_COINS;}
-			}
-		}else {
-			return Messages.INVALID_POSITION;
-		}
+	public String addGameObject(String plantType, Position position) {
+	    if (!isInsideBoard(position)) {
+	        return Messages.INVALID_POSITION;
+	    }
+
+	    if (!isEmpty(position)) {
+	        return Messages.INVALID_POSITION;
+	    }
+
+	    boolean isPeashooter = plantType.equalsIgnoreCase(Peashooter.shortName())
+	                        || plantType.equalsIgnoreCase(Peashooter.longName());
+	    boolean isSunflower  = plantType.equalsIgnoreCase(Sunflower.shortName())
+	                        || plantType.equalsIgnoreCase(Sunflower.longName());
+
+	    if (!isPeashooter && !isSunflower) {
+	        return Messages.INVALID_GAME_OBJECT;
+	    }
+
+	    int cost = isPeashooter ? Peashooter.COST : Sunflower.COST;
+	    if (coins < cost) {
+	        return Messages.NOT_ENOUGH_COINS;
+	    }
+
+	    if (isPeashooter) {
+	        peashooterList.add(new Peashooter(position, this));
+	    } else {
+	        sunflowerList.add(new Sunflower(position, this));
+	    }
+	    coins -= cost;
+	    return null;
 	}
 	
 	/**

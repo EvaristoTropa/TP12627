@@ -72,7 +72,7 @@ public class SunflowerList {
 	//Removes every dead Sunflower from the list
 	public void removeDead() {
 		for(int i = 0; i<numberOfSuns; i++) {
-			if(sunflowers[i].isAlive()) {
+			if(!sunflowers[i].isAlive()) {
 				remove(i);
 			}
 		}

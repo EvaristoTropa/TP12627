@@ -73,7 +73,7 @@ public class PeashooterList {
 	//Removes every dead Peashooter from the list
 	public void removeDead() {
 		for(int i = 0; i<numberOfPeas; i++) {
-			if(peashooters[i].isAlive()) {
+			if(!peashooters[i].isAlive()) {
 				remove(i);
 				i--;
 			}

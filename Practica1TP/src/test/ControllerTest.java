@@ -306,7 +306,7 @@ class ControllerTest {
         // First add: 50 - 20 = 30. Second add should fail (position occupied).
         assertEquals(previousCoins, game.getCoins());
     }
-
+    
     // ------------------------------------------------------------------ //
     //  add — missing parameters                                            //
     // ------------------------------------------------------------------ //

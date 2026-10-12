@@ -79,12 +79,11 @@ public class Position {
     
     @Override
     public boolean equals(Object o) {
-        if (o.getClass() == this.getClass())
-        return ((Position) o).row == this.row && ((Position) o).col == this.col;
-        else
-        return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Position other = (Position) o;
+        return row == other.row && col == other.col;
     }
-    
     /**
      * Generates a position's hashcode.
      * 

@@ -43,20 +43,19 @@ public class Sunflower {
 	}
 	
 	public void update() {
-		if(!isAlive()) {
-			cooldown++;
+		if(isAlive()) {
 			if(cooldown >= FRECUENCY) {
 				game.generateCoins(10);
 				cooldown = 0;
 			}
+			cooldown++;
 		}
 	}
 
 	public boolean isInPosition(Position p) {
-
-		return pos == p;
+	    return pos.equals(p);
 	}
-
+	
 	public void receiveDamage(int damage) {
 		
 		hp -= damage;

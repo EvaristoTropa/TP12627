@@ -37,42 +37,43 @@ public class Controller {
 			this.name = name;
 		}
 		public static Prompts fromString(String text) {
-			
 			String t = text.trim().toLowerCase();
 			for(Prompts p : values()) {
-				if(t == p.letter ||t == p.name) return p;
+				if(t.equals(p.letter) ||t.equals(p.name)) return p;
 			}
 			return null;
 		}
 		
 		public static Prompts fromString(String[] text) {
 			if(text==null||text.length==0) return NONE;
+		    if (text[0].isBlank()) return NONE;
 			return fromString(text[0]);
 		}
 		
 	};
 	
 	private void listPlants() {
-
 	    // Sunflower
 	    view.showMessage(String.format(Messages.SUNFLOWER_DESCRIPTION,
-	            Sunflower.shortName().toUpperCase(),
 	            Sunflower.COST,
 	            Sunflower.DAMAGE,
 	            Sunflower.ENDURANCE));
 
 	    // Peashooter
 	    view.showMessage(String.format(Messages.PEASHOOTER_DESCRIPTION,	            
-	    		Peashooter.shortName().toUpperCase(),
 	            Peashooter.COST,
 	            Peashooter.DAMAGE,
 	            Peashooter.ENDURANCE));
-
-	    System.out.println();
+	    view.showMessage("");
 	}
 	private void showHelp() {
-		
-		System.out.println(Messages.HELP_LINES);
+		for(String line : Messages.HELP_LINES) {
+			view.showMessage(line);
+		}
+	}
+	
+	private static boolean isInteger(String s) {
+	    return s != null && s.matches("-?\\d+");
 	}
 
 	public Controller(Game game) {
@@ -85,7 +86,7 @@ public class Controller {
 	 */
 	public void run() {
 		view.showGame();
-		while(game.hasGameFinished()||game.playerQuits()) {
+		while(!game.hasGameFinished()&&!game.playerQuits()) {
 			String[] prompt = view.getPrompt();
 			Prompts prompttype = Prompts.fromString(prompt);
 			if(prompttype ==null) {
@@ -93,23 +94,30 @@ public class Controller {
 			}else {
 				switch (prompttype) {
 				case ADD:
-					if(prompt.length>4) {
+					if(prompt.length == 4) {
+						if (!isInteger(prompt[2]) || !isInteger(prompt[3])) {
+					        view.showError(Messages.INVALID_POSITION);
+					        break;
+					    }
 						Position pos = new Position(Integer.parseInt(prompt[3]), Integer.parseInt(prompt[2]));
 						String error = game.addGameObject(prompt[1], pos);
 						if(error!=null) {
 							view.showError(error);
+							break;
 						}
+						game.update();
+						view.showGame();
 					}else {
 						view.showError(Messages.COMMAND_PARAMETERS_MISSING);
 					}
-					game.update();
-					view.showGame();
+
 					break;
 				case LIST:
 					listPlants();
 					break;
 				case RESET:
 					game.reset();
+					view.showGame();
 					break;
 				case HELP:
 					showHelp();
@@ -122,7 +130,6 @@ public class Controller {
 					view.showGame();
 					break;
 				};
-				game.update();
 			}
 			
 		}	

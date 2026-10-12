@@ -25,7 +25,7 @@ public class Peashooter {
 		int z = pos.row();
 		int i = pos.column() + 1;
 		Position target = new Position(z, i);
-		while(i < game.NUM_COLS && game.isEmpty(target)) {
+		while(i < Game.NUM_COLS && !game.containsZombie(target)) {
 			i++;
 			target = new Position(z, i);
 		}
@@ -42,7 +42,7 @@ public class Peashooter {
 		
 		this.pos = pos;
 		this.game = game;
-		this.cooldown = 0;
+		this.cooldown = FRECUENCY;
 		this.hp = ENDURANCE;
 	}
 	
@@ -62,18 +62,19 @@ public class Peashooter {
 	
 	public void update() {
 		
-		if(!isAlive()) {
-			cooldown++;
+		if(isAlive()) {
+			
 			if(cooldown>=FRECUENCY) {
 				attack();
 				cooldown = 0;
 			}
+			cooldown++;
 		}
 	}
 
 	public boolean isInPosition(Position p) {
 
-		return pos == p;
+		return pos.equals(p);
 	}
 
 	public void receiveDamage(int damage) {
