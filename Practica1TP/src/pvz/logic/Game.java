@@ -181,24 +181,28 @@ public class Game {
 	 * @param plantType Plant to spawn, position Position of the new plant
 	 */
 	
-	public void addGameObject(String plantType,  Position position) {
+	public String addGameObject(String plantType,  Position position) {
 		if (isEmpty(position) && isInsideBoard(position)) {
 			if ((plantType.equalsIgnoreCase(Peashooter.shortName())
 					|| plantType.equalsIgnoreCase(Peashooter.longName()))
 					&& coins >= Peashooter.COST) {
 						peashooterList.add(new Peashooter(position, this));
 						coins -= Peashooter.COST;
+						return null;
 			}
 			else if ((plantType.equalsIgnoreCase(Sunflower.shortName())
 					|| plantType.equalsIgnoreCase(Sunflower.longName()))
 					&& coins >= Sunflower.COST) {
 						sunflowerList.add(new Sunflower(position, this));
 						coins -= Sunflower.COST;
+						return null;
 			}else {
-				System.out.println(Messages.INVALID_GAME_OBJECT);
+				
+				if(coins<Peashooter.COST) {return Messages.INVALID_GAME_OBJECT;}
+				else {return Messages.NOT_ENOUGH_COINS;}
 			}
 		}else {
-			System.out.println(Messages.INVALID_POSITION);
+			return Messages.INVALID_POSITION;
 		}
 	}
 	

@@ -53,18 +53,17 @@ public class Controller {
 	};
 	
 	private void listPlants() {
-	    System.out.println();
 
 	    // Sunflower
-	    System.out.println(String.format("[%s]unflower: cost='%d' suncoins, damage='%d', endurance='%d'",
+	    view.showMessage(String.format(Messages.SUNFLOWER_DESCRIPTION,
 	            Sunflower.shortName().toUpperCase(),
 	            Sunflower.COST,
 	            Sunflower.DAMAGE,
 	            Sunflower.ENDURANCE));
 
 	    // Peashooter
-	    System.out.println(String.format("[%s]eashooter: cost='%d' suncoins, damage='%d', endurance='%d'",
-	            Peashooter.shortName().toUpperCase(),
+	    view.showMessage(String.format(Messages.PEASHOOTER_DESCRIPTION,	            
+	    		Peashooter.shortName().toUpperCase(),
 	            Peashooter.COST,
 	            Peashooter.DAMAGE,
 	            Peashooter.ENDURANCE));
@@ -85,22 +84,26 @@ public class Controller {
 	 * Runs the game logic.
 	 */
 	public void run() {
-		while(game.hasGameFinished()) {
-			view.showGame();
+		view.showGame();
+		while(game.hasGameFinished()||game.playerQuits()) {
 			String[] prompt = view.getPrompt();
 			Prompts prompttype = Prompts.fromString(prompt);
 			if(prompttype ==null) {
-				System.out.println(Messages.UNKNOWN_COMMAND);
+				view.showError(Messages.UNKNOWN_COMMAND);
 			}else {
 				switch (prompttype) {
 				case ADD:
 					if(prompt.length>4) {
 						Position pos = new Position(Integer.parseInt(prompt[3]), Integer.parseInt(prompt[2]));
-						game.addGameObject(prompt[1], pos);
+						String error = game.addGameObject(prompt[1], pos);
+						if(error!=null) {
+							view.showError(error);
+						}
 					}else {
-						System.out.println(Messages.COMMAND_PARAMETERS_MISSING);
+						view.showError(Messages.COMMAND_PARAMETERS_MISSING);
 					}
 					game.update();
+					view.showGame();
 					break;
 				case LIST:
 					listPlants();
@@ -116,11 +119,15 @@ public class Controller {
 					break;
 				case NONE:
 					game.update();
+					view.showGame();
 					break;
 				};
 				game.update();
 			}
+			
 		}	
+		view.showEndMessage();
+		
 	}
 
 }
