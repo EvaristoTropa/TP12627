@@ -65,7 +65,7 @@ public class PeashooterList {
 	
 	public boolean damage(Position p, int damage) {
     	int i = search(p);
-    	if (i != -1) peashooters[i].receiveAttack(damage);
+    	if (i != -1) peashooters[i].receiveDamage(damage);
         return i == -1;
     }
 	
@@ -73,7 +73,7 @@ public class PeashooterList {
 	//Removes every dead Peashooter from the list
 	public void removeDead() {
 		for(int i = 0; i<numberOfPeas; i++) {
-			if(peashooters[i].dead()) {
+			if(peashooters[i].isAlive()) {
 				remove(i);
 				i--;
 			}
@@ -83,7 +83,7 @@ public class PeashooterList {
 	public void receiveDamage(Position p, int dmg) {
 		
 		int a = search(p);
-		peashooters[a].receiveAttack(dmg);
+		peashooters[a].receiveDamage(dmg);
 	}
 	
 	public String iconInPosition(Position p) {

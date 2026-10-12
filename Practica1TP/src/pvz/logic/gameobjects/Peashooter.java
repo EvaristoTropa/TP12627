@@ -62,7 +62,7 @@ public class Peashooter {
 	
 	public void update() {
 		
-		if(!dead()) {
+		if(!isAlive()) {
 			cooldown++;
 			if(cooldown>=FRECUENCY) {
 				attack();
@@ -76,14 +76,14 @@ public class Peashooter {
 		return pos == p;
 	}
 
-	public void receiveAttack(int damage) {
+	public void receiveDamage(int damage) {
 		
 		hp -= damage;
 	}
 
-	public boolean dead() {
+	public boolean isAlive() {
 
-		return hp <= 0;
+		return hp > 0;
 	}
 	
 public String getIcon() {

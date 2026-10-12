@@ -43,7 +43,7 @@ public class Sunflower {
 	}
 	
 	public void update() {
-		if(!dead()) {
+		if(!isAlive()) {
 			cooldown++;
 			if(cooldown >= FRECUENCY) {
 				game.generateCoins(10);
@@ -57,14 +57,14 @@ public class Sunflower {
 		return pos == p;
 	}
 
-	public void receiveAttack(int damage) {
+	public void receiveDamage(int damage) {
 		
 		hp -= damage;
 	}
 
-	public boolean dead() {
+	public boolean isAlive() {
 
-		return hp <= 0;
+		return hp > 0;
 	}
 	
 	public String getIcon() {

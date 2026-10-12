@@ -64,7 +64,7 @@ public class SunflowerList {
 	public boolean damage(Position p, int damage) {
     	int i = search(p);
     	if (i != -1)
-        sunflowers[i].receiveAttack(damage);
+        sunflowers[i].receiveDamage(damage);
         return i < numberOfSuns;
     }
 	
@@ -72,7 +72,7 @@ public class SunflowerList {
 	//Removes every dead Sunflower from the list
 	public void removeDead() {
 		for(int i = 0; i<numberOfSuns; i++) {
-			if(sunflowers[i].dead()) {
+			if(sunflowers[i].isAlive()) {
 				remove(i);
 			}
 		}
@@ -81,7 +81,7 @@ public class SunflowerList {
 	public void receiveDamage(Position p, int dmg) {
 		
 		int a = search(p);
-		sunflowers[a].receiveAttack(dmg);
+		sunflowers[a].receiveDamage(dmg);
 	}
 
 	public String iconInPosition(Position p) {
