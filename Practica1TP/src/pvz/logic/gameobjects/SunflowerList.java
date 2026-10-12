@@ -81,7 +81,9 @@ public class SunflowerList {
 	public void receiveDamage(Position p, int dmg) {
 		
 		int a = search(p);
+		if(a != -1) {
 		sunflowers[a].receiveDamage(dmg);
+		}
 	}
 
 	public String iconInPosition(Position p) {

@@ -83,7 +83,9 @@ public class PeashooterList {
 	public void receiveDamage(Position p, int dmg) {
 		
 		int a = search(p);
-		peashooters[a].receiveDamage(dmg);
+		if(a != -1){
+			peashooters[a].receiveDamage(dmg);
+		}
 	}
 	
 	public String iconInPosition(Position p) {
