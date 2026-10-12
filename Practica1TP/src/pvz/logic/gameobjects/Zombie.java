@@ -93,7 +93,6 @@ public class Zombie {
     			targetPos = new Position(position.row(), position.column() - 1);
     			counter = 0;
     		}
-    		if (!game.isEmpty(targetPos))
     		game.attackPlant(targetPos, DAMAGE);
     		counter++;
     	}
