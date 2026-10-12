@@ -7,21 +7,31 @@ package pvz.control;
  * probability. Higher difficulties spawn more zombies and spawn them more
  * frequently. These values are fixed at construction and never change during
  * a game.
+ * 
+ * @author Rodrigo Domínguez Carramal
  */
 public enum Level {
-
-	// TODO fill your code
-
-	private int numberOfZombies;
 	
-	private double zombieFrequency;
+	EASY(3, 0.1),
+	MEDIUM(5, 0.2),
+	HARD(10, 0.3);
+	
+	private final int numberOfZombies;
+	private final double zombieFrequency;
+	
 
 	private Level(int numberOfZombies, double zombieFrequency) {
 		this.numberOfZombies = numberOfZombies;
 		this.zombieFrequency = zombieFrequency;
 	}
 
-	// TODO fill your code
+	public int getNumberOfZombies() {
+		return numberOfZombies;
+	}
+	
+	public double getZombieFrequency() {
+		return zombieFrequency;
+	}
 
 	/**
 	 * Parse a string and return any matching level

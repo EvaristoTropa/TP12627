@@ -4,14 +4,21 @@ import pvz.utils.Position;
 import pvz.view.Messages;
 import pvz.logic.Game;
 
+/**
+ * 
+ * 
+ * @author Rodrigo Domínguez Carramal
+ */
+
+
 public class Peashooter {
 
 	private Position pos;
 	private Game game;
 	private int hp;
 	private int cooldown;
-	private static final int DAMAGE = 1, FRECUENCY = 1, ENDURANCE = 3;
-	private static final String shortn = "p", longn = "peashooter";
+	public static final int DAMAGE = 1, FRECUENCY = 1, ENDURANCE = 3;
+	private static final String shortn = "p", longn = "peashooter", desc = "Dispara guisantes a los zombis causándoles daño.\n";
 	
 	private void attack() {
 		
@@ -47,6 +54,10 @@ public class Peashooter {
 	
 	public static String longName() {
 		return longn;
+	}
+	
+	public static String getDescription() {
+		return desc;
 	}
 	
 	public void update() {

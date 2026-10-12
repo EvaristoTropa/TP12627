@@ -4,14 +4,21 @@ import pvz.logic.Game;
 import pvz.utils.Position;
 import pvz.view.Messages;
 
+/**
+ * 
+ * 
+ * @author Rodrigo Domínguez Carramal
+ */
+
+
 public class Sunflower {
 	
 	private Position pos;
 	private Game game;
 	private int hp;
 	private int cooldown;
-	private static final int DAMAGE = 0, FRECUENCY = 3, ENDURANCE = 1;
-	private static final String shortn = "s", longn = "sunflower";
+	public static final int DAMAGE = 0, FRECUENCY = 3, ENDURANCE = 1;
+	private static final String shortn = "s", longn = "sunflower", desc = "Genera soles.\n";
 	
 	
 	public static final int COST = 20;
@@ -29,6 +36,10 @@ public class Sunflower {
 	
 	public static String longName() {
 		return longn;
+	}
+	
+	public static String getDescription() {
+		return desc;
 	}
 	
 	public void update() {

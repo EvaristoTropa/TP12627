@@ -2,6 +2,13 @@ package pvz.logic.gameobjects;
 
 import pvz.utils.Position;
 
+/**
+ * 
+ * 
+ * @author Rodrigo Domínguez Carramal
+ */
+
+
 public class SunflowerList {
 	private int numberOfSuns;
 	private final Sunflower[] sunflowers;

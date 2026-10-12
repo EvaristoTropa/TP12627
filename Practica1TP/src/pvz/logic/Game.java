@@ -4,6 +4,7 @@ import java.util.Random;
 
 import pvz.control.Level;
 import pvz.utils.Position;
+import pvz.view.Messages;
 import pvz.logic.gameobjects.PeashooterList;
 import pvz.logic.gameobjects.SunflowerList;
 import pvz.logic.gameobjects.Peashooter;
@@ -187,13 +188,17 @@ public class Game {
 					&& coins >= Peashooter.COST) {
 						peashooterList.add(new Peashooter(position, this));
 						coins -= Peashooter.COST;
-				}
+			}
 			else if ((plantType.equalsIgnoreCase(Sunflower.shortName())
 					|| plantType.equalsIgnoreCase(Sunflower.longName()))
 					&& coins >= Sunflower.COST) {
 						sunflowerList.add(new Sunflower(position, this));
 						coins -= Sunflower.COST;
-					}
+			}else {
+				System.out.println(Messages.INVALID_GAME_OBJECT);
+			}
+		}else {
+			System.out.println(Messages.INVALID_POSITION);
 		}
 	}
 	

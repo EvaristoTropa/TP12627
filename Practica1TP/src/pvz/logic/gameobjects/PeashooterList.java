@@ -21,7 +21,7 @@ public class PeashooterList {
 		this.peashooters = new Peashooter[MAX_PEAS];
 	}
 	
-}
+
 	
 	public void update() {
 		for(int i = 0; i<numberOfPeas; i++) peashooters[i].update();
