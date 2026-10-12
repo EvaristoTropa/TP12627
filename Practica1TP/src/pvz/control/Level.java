@@ -13,8 +13,8 @@ package pvz.control;
 public enum Level {
 	
 	EASY(3, 0.1),
-	MEDIUM(5, 0.2),
-	HARD(10, 0.3);
+	HARD(5, 0.2),
+	INSANE(10, 0.3);
 	
 	private final int numberOfZombies;
 	private final double zombieFrequency;
