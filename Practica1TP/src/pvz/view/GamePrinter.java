@@ -6,6 +6,8 @@ import static pvz.view.Messages.error;
 import static pvz.utils.StringUtils.*;
 
 import pvz.logic.Game;
+import pvz.logic.GameWorld;
+import pvz.logic.GameStatus;
 import pvz.utils.Position;
 import pvz.utils.StringUtils;
 
@@ -22,8 +24,6 @@ import java.util.Scanner;
  * <p>This class is read-only with respect to {@link Game}: it queries game state
  * through the public API and never modifies it. All string literals and format
  * templates are sourced from {@link Messages}.
- * 
- * @author Rodrigo Ferrer López (filled template)
  */
 public class GamePrinter implements GameView {
 
@@ -39,7 +39,7 @@ public class GamePrinter implements GameView {
 	
 	private static final String MARGIN = repeat(SPACE, MARGIN_SIZE);
 
-	private static final int CELL_SIZE = 8;
+	private static final int CELL_SIZE = 12;
 
 	private static final String CELL_BORDER = repeat(CELL_BORDER_CHAR, CELL_SIZE);
 
@@ -47,10 +47,10 @@ public class GamePrinter implements GameView {
 
 	private static final String INDENTED_ROW_BORDER = String.format("%n%s%s%n", MARGIN, ROW_BORDER);
 
-	private Game game;
+	private GameStatus game;
 	private Scanner scanner;
 
-	public GamePrinter(Game game) {
+	public GamePrinter(GameStatus game) {
 		this.game = game;
 		this.scanner = new Scanner(System.in);
 	}
@@ -62,9 +62,9 @@ public class GamePrinter implements GameView {
 	 */
 	private String getInfo() {
 		StringBuilder buffer = new StringBuilder();
-		buffer.append(Messages.NUMBER_OF_CYCLES.formatted(game.getCycles()));
-		buffer.append(Messages.NUMBER_OF_COINS.formatted(game.getCoins()));
-		buffer.append(Messages.REMAINING_ZOMBIES.formatted(game.getRemainingZombies()));
+
+		// TODO fill your code
+
 		return buffer.toString();
 	}
 
@@ -81,9 +81,9 @@ public class GamePrinter implements GameView {
 		// Paint game board
 		str.append(INDENTED_ROW_BORDER);
 
-		for (int row = 0; row < Game.NUM_ROWS; row++) {
+		for (int row = 0; row < GameWorld.NUM_ROWS; row++) {
 			str.append(MARGIN).append(VERTICAL_DELIMITER);
-			for (int col = 0; col < Game.NUM_COLS; col++) {
+			for (int col = 0; col < GameWorld.NUM_COLS; col++) {
 				str.append(StringUtils.centre(game.positionToString(new Position(row, col)), CELL_SIZE)).append(VERTICAL_DELIMITER);
 			}
 			str.append(INDENTED_ROW_BORDER);
@@ -98,13 +98,7 @@ public class GamePrinter implements GameView {
 	@Override
 	public void showEndMessage() {
 		StringBuilder buffer = new StringBuilder(Messages.GAME_OVER);
-		buffer.append(NEW_LINE);
-		if (game.playerWins())
-			buffer.append(Messages.PLAYER_WINS);
-		else if (game.playerQuits())
-			buffer.append(Messages.PLAYER_QUITS);
-		else
-			buffer.append(Messages.ZOMBIES_WIN);
+		// TODO fill your code
 		System.out.println(buffer);
 	}
 
