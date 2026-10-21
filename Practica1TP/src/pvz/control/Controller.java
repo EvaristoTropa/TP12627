@@ -1,5 +1,6 @@
 package pvz.control;
 
+import pvz.control.commands.Command;
 import pvz.logic.Game;
 import pvz.view.GamePrinter;
 import pvz.view.GameView;
@@ -85,41 +86,13 @@ public class Controller {
 	 * Runs the game logic.
 	 */
 	public void run() {
-		while(game.hasGameFinished()) {
-			view.showGame();
-			String[] prompt = view.getPrompt();
-			Prompts prompttype = Prompts.fromString(prompt);
-			if(prompttype ==null) {
-				System.out.println(Messages.UNKNOWN_COMMAND);
-			}else {
-				switch (prompttype) {
-				case ADD:
-					if(prompt.length>4) {
-						Position pos = new Position(Integer.parseInt(prompt[3]), Integer.parseInt(prompt[2]));
-						game.addGameObject(prompt[1], pos);
-					}else {
-						System.out.println(Messages.COMMAND_PARAMETERS_MISSING);
-					}
-					game.update();
-					break;
-				case LIST:
-					listPlants();
-					break;
-				case RESET:
-					game.reset();
-					break;
-				case HELP:
-					showHelp();
-					break;
-				case EXIT:
-					game.quit();
-					break;
-				case NONE:
-					game.update();
-					break;
-				};
-				game.update();
-			}
+		while(!game.hasGameFinished() && !game.playerQuits()) {
+			String[] words = view.getPrompt();
+			Command command = Command.parse(words);
+			if (command != null)
+				command.execute(game, view);
+			else
+				view.showError(Messages.UNKNOWN_COMMAND);
 		}	
 	}
 

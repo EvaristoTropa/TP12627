@@ -13,7 +13,20 @@ public class ResetCommand extends Command {
 	}
 	
 	@Override
+	public boolean matchCommand(String command) {
+		return command == name || command == shortcut;
+	}
+	
+	@Override
+	public Command create(String[] commandWords) {
+		if (commandWords.length == 1)
+			return this;
+		else
+			return null;
+	}
+	
+	@Override
 	public void execute(GameModel model, GameView view) {
-		//...
+		model.reset();
 	}
 }
