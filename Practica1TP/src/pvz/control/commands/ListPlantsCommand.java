@@ -27,6 +27,7 @@ public class ListPlantsCommand extends Command {
 	
 	@Override
 	public void execute(GameModel model, GameView view) {
+		view.showMessage(Messages.PEASHOOTER_NAME_AND_SHORTCUT);
 		//...
 	}
 }
