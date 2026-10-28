@@ -1,5 +1,7 @@
 package pvz.control.commands;
 
+import pvz.control.PlantFactory;
+import pvz.logic.gameobjects.Plant;
 import pvz.logic.GameModel;
 import pvz.view.GameView;
 import pvz.view.Messages;
@@ -27,7 +29,7 @@ public class ListPlantsCommand extends Command {
 	
 	@Override
 	public void execute(GameModel model, GameView view) {
-		view.showMessage(Messages.PEASHOOTER_NAME_AND_SHORTCUT);
-		//...
+		for (Plant i : PlantFactory.getAvailablePlants())
+			view.showMessage(i.getDescription());
 	}
 }

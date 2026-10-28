@@ -12,13 +12,13 @@ import pvz.view.Messages;
  * @author Rodrigo Ferrer López
 */
 
-public class Zombie {
+public class BasicZombie {
     private Position position;
 	private Game game;
 	private int hp, counter;
     private static final int DAMAGE = 1, PERIOD = 2, ENDURANCE = 5;
 	
-	public Zombie(Position position, Game game) {
+	public BasicZombie(Position position, Game game) {
 		this.position = position;
 		this.game = game;
 		this.hp = ENDURANCE;

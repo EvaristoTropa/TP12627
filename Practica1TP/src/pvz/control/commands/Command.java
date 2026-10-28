@@ -7,7 +7,7 @@ import pvz.logic.GameModel;
 import pvz.view.GameView;
 
 public abstract class Command {
-	private static final List<Command> AVAILABLE_COMMANDS = Arrays.asList(
+	protected static final List<Command> AVAILABLE_COMMANDS = Arrays.asList(
 			new AddPlantCommand(),
 			new ListPlantsCommand(),
 			new ResetCommand(),

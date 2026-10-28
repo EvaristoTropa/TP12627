@@ -1,13 +1,14 @@
 package pvz.control.commands;
 
-import pvz.logic.gameobjects.Plant;ç
+import pvz.control.PlantFactory;
+import pvz.logic.gameobjects.Plant;
 import pvz.utils.Position;
 import pvz.logic.GameModel;
 import pvz.view.GameView;
 import pvz.view.Messages;
 
 public class AddPlantCommand extends Command {
-	private Plant plant;
+	private String plantName;
 	private Position position;
 	
 	public AddPlantCommand() {
@@ -25,7 +26,7 @@ public class AddPlantCommand extends Command {
 	@Override
 	public Command create(String[] commandWords) {
 		if (commandWords.length == 4) {
-			plant = new Plant(commandWords[1]);
+			plantName = commandWords[1];
 			position = new Position(Integer.parseInt(commandWords[3]), Integer.parseInt(commandWords[2]));
 			return this;
 		}
@@ -35,6 +36,7 @@ public class AddPlantCommand extends Command {
 	
 	@Override
 	public void execute(GameModel model, GameView view) {
-		model.addGameObject(plant, position);
+		Plant plant = PlantFactory.spawnPlant(this.plantName, model, position);
+		model.addPlant(plant);
 	}
 }

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pvz.control.Level;
 import pvz.logic.Game;
-import pvz.logic.gameobjects.Zombie;
+import pvz.logic.gameobjects.BasicZombie;
 import pvz.utils.Position;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,14 +24,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class ZombieTest {
 
     private Game game;
-    private Zombie zombie;
+    private BasicZombie zombie;
     private Position startPosition;
 
     @BeforeEach
     void setUp() {
         game = new Game(0L, Level.EASY);
         startPosition = new Position(0, 5);
-        zombie = new Zombie(startPosition, game);
+        zombie = new BasicZombie(startPosition, game);
     }
 
     // ------------------------------------------------------------------ //

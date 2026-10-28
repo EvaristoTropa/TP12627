@@ -28,6 +28,7 @@ public class HelpCommand extends Command {
 	@Override
 	public void execute(GameModel model, GameView view) {
 		view.showMessage(Messages.HELP_AVAILABLE_COMMANDS);
-		//...
+		for (Command i : AVAILABLE_COMMANDS)
+			view.showMessage(i.getHelp());
 	}
 }

@@ -3,19 +3,19 @@ package pvz.logic.gameobjects;
 import pvz.utils.Position;
 
 /**
- * Contains a list of all zombies ({@link Zombie}) in the game and methods to handle it.
+ * Contains a list of all zombies ({@link BasicZombie}) in the game and methods to handle it.
  * 
  * @author Rodrigo Ferrer López
 */
 
 public class ZombieList {
     private int numberOfZombies;
-    private final Zombie[] zombies;
+    private final BasicZombie[] zombies;
     private static final int MAX_ZOMBIES = 100;
     
     public ZombieList() {
         this.numberOfZombies = 0;
-        this.zombies = new Zombie[MAX_ZOMBIES];
+        this.zombies = new BasicZombie[MAX_ZOMBIES];
     }
     
     /**
@@ -67,7 +67,7 @@ public class ZombieList {
 	 * @param z Zombie to add
 	 */
     
-    public void add(Zombie z) {
+    public void add(BasicZombie z) {
         if (numberOfZombies < MAX_ZOMBIES) {
         zombies[numberOfZombies] = z;
         numberOfZombies++;
