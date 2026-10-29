@@ -4,6 +4,12 @@ import pvz.logic.GameModel;
 import pvz.view.GameView;
 import pvz.view.Messages;
 
+/**
+ * Command that quits the game.
+ * 
+ * @author Rodrigo Ferrer López
+ */
+
 public class ExitCommand extends Command {
 	public ExitCommand() {
 		this.name = Messages.COMMAND_EXIT_NAME;

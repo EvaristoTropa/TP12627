@@ -6,6 +6,12 @@ import pvz.logic.GameModel;
 import pvz.view.GameView;
 import pvz.view.Messages;
 
+/**
+ * Command that shows what plants you can add.
+ * 
+ * @author Rodrigo Ferrer López
+ */
+
 public class ListPlantsCommand extends Command {
 	public ListPlantsCommand() {
 		this.name = Messages.COMMAND_LIST_PLANTS_NAME;

@@ -5,6 +5,12 @@ import pvz.logic.GameModel;
 import pvz.view.GameView;
 import pvz.view.Messages;
 
+/**
+ * Command that resets the game to its initial parameters.
+ * 
+ * @author Rodrigo Ferrer López
+ */
+
 public class ResetCommand extends Command {
 	private Level level;
 	private long seed;

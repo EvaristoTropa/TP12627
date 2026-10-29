@@ -4,6 +4,12 @@ import pvz.logic.GameModel;
 import pvz.view.GameView;
 import pvz.view.Messages;
 
+/**
+ * Command that shows how to use each command.
+ * 
+ * @author Rodrigo Ferrer López
+ */
+
 public class HelpCommand extends Command {
 	public HelpCommand() {
 		this.name = Messages.COMMAND_HELP_NAME;

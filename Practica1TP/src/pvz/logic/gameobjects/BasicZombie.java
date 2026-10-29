@@ -87,10 +87,10 @@ public class BasicZombie {
     
     public void update() {
     	if (isAlive()) {
-    		Position targetPos = new Position(position.row(), position.column() - 1);
+    		Position targetPos = Position.right(position);
     		if (game.isEmpty(targetPos) && counter >= PERIOD) {
     			position = targetPos;
-    			targetPos = new Position(position.row(), position.column() - 1);
+    			targetPos = Position.right(position);
     			counter = 0;
     		}
     		game.attackPlant(targetPos, DAMAGE);

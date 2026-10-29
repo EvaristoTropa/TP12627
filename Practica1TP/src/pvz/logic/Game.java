@@ -33,15 +33,7 @@ public class Game {
 	public static final int INITIAL_COINS = 50;
 	
 	public Game (long seed, Level level) {
-		this.seed = seed;
-		this.level = level;
-		this.rand = new Random(seed);
-		this.zombieManager = new ZombiesManager(this, level, rand);
-		this.peashooterList = new PeashooterList();
-		this.sunflowerList = new SunflowerList();
-		this.cycles = 0;
-		this.coins = INITIAL_COINS;
-		this.quit = false;
+		reset();
 	}
 	
 	/**

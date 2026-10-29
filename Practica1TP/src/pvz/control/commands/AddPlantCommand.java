@@ -7,6 +7,12 @@ import pvz.logic.GameModel;
 import pvz.view.GameView;
 import pvz.view.Messages;
 
+/**
+ * Command that adds a plant in a specified position.
+ * 
+ * @author Rodrigo Ferrer López
+ */
+
 public class AddPlantCommand extends Command {
 	private String plantName;
 	private Position position;

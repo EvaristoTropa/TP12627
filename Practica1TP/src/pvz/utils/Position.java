@@ -70,6 +70,18 @@ public class Position {
     }
     
     /**
+     * Creates a new position to the right of a previous one.
+     * 
+     * @param other Position to modify
+     * 
+     * @return a new position to the right (the other stays intact).
+     */
+    
+    public static Position right(Position other) {
+    	return new Position(other.row(), other.column() + 1);
+    }
+    
+    /**
      * Checks if two positions are the same.
      * 
      * @param o Object (Position) to compare

@@ -4,6 +4,12 @@ import pvz.logic.GameModel;
 import pvz.view.GameView;
 import pvz.view.Messages;
 
+/**
+ * Command that skips the player's turn and updates the game.
+ * 
+ * @author Rodrigo Ferrer López
+ */
+
 public class UpdateCommand extends Command {
 	public UpdateCommand() {
 		this.name = Messages.COMMAND_UPDATE_NAME;
