@@ -11,7 +11,7 @@ import pvz.utils.Position;
 /**
  * Implementation of the Factory pattern for zombies.
  * 
- * Allows the game to create zombies in a streamlined way.
+ * <p>Allows the game to create zombies in a streamlined way.
  * 
  * @author Rodrigo Ferrer López
  */
@@ -22,7 +22,13 @@ public class ZombieFactory {
 	);
 	
 	public static Zombie spawnZombie(String zombieName, GameWorld game, Position position) {
-		// ...
+		Zombie zombie = zombie.identify(zombieName);
+		if (zombie != null && !game.isEmpty(position)) {
+			zombie.setPosition(position);
+			return zombie;
+		}
+		else
+			return null;
 	}
 	
 	public static List<Zombie> getAvailableZombies() {

@@ -1,4 +1,4 @@
-package pvz.control.commands;
+package pvz.control.command;
 
 import pvz.control.Level;
 import pvz.logic.GameModel;

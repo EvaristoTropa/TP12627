@@ -1,21 +1,21 @@
-package pvz.control.commands;
+package pvz.control.command;
 
 import pvz.logic.GameModel;
 import pvz.view.GameView;
 import pvz.view.Messages;
 
 /**
- * Command that quits the game.
+ * Command that shows how to use each command.
  * 
  * @author Rodrigo Ferrer López
  */
 
-public class ExitCommand extends Command {
-	public ExitCommand() {
-		this.name = Messages.COMMAND_EXIT_NAME;
-		this.shortcut = Messages.COMMAND_EXIT_SHORTCUT;
-		this.details = Messages.COMMAND_EXIT_DETAILS;
-		this.help = Messages.COMMAND_EXIT_HELP;
+public class HelpCommand extends Command {
+	public HelpCommand() {
+		this.name = Messages.COMMAND_HELP_NAME;
+		this.shortcut = Messages.COMMAND_HELP_SHORTCUT;
+		this.details = Messages.COMMAND_HELP_DETAILS;
+		this.help = Messages.COMMAND_HELP_HELP;
 	}
 	
 	@Override
@@ -33,6 +33,8 @@ public class ExitCommand extends Command {
 	
 	@Override
 	public void execute(GameModel model, GameView view) {
-		model.quit();
+		view.showMessage(Messages.HELP_AVAILABLE_COMMANDS);
+		for (Command i : AVAILABLE_COMMANDS)
+			view.showMessage(i.getHelp());
 	}
 }

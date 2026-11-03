@@ -11,7 +11,7 @@ import pvz.utils.Position;
 /**
  * Implementation of the Factory pattern for plants.
  * 
- * Allows the game to create plants in a streamlined way.
+ * <p>Allows the game to create plants in a streamlined way.
  * 
  * @author Rodrigo Ferrer López
  */
@@ -23,7 +23,13 @@ public class PlantFactory {
 	);
 	
 	public static Plant spawnPlant(String plantName, GameWorld game, Position position) {
-		// ...
+		Plant plant = plant.identify(plantName);
+		if (plant != null && !game.isEmpty(position)) {
+			plant.setPosition(position);
+			return plant;
+		}
+		else
+			return null;
 	}
 	
 	public static List<Plant> getAvailablePlants() {

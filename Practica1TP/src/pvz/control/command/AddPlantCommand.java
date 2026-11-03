@@ -1,4 +1,4 @@
-package pvz.control.commands;
+package pvz.control.command;
 
 import pvz.control.PlantFactory;
 import pvz.logic.gameobjects.Plant;

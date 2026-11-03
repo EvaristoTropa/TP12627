@@ -1,12 +1,11 @@
 package pvz.control;
 
-import pvz.control.commands.Command;
+import pvz.control.command.Command;
 import pvz.logic.Game;
 import pvz.view.GamePrinter;
 import pvz.view.GameView;
 import pvz.view.Messages;
 import pvz.utils.Position;
-import pvz.logic.gameobjects.*;
 
 /**
  * Input/output coordinator of the game (the C in MVC).
@@ -17,12 +16,13 @@ import pvz.logic.gameobjects.*;
  * {@link tp1.pvz.view.GameView>} when the cycle advances. It holds no game
  * state of its own; the source of truth is always {@link Game}.
  * 
- * @author Rodrigo Dominguez Carramal
+ * @author Rodrigo Dominguez Carramal (V1), Rodrigo Ferrer López (V2)
  */
 public class Controller {
 
 	private final Game game;
 	private final GameView view;
+	/*
 	enum Prompts {
 		ADD("a", "add"), 
 		LIST("l", "list"), 
@@ -76,6 +76,7 @@ public class Controller {
 		
 		System.out.println(Messages.HELP_LINES);
 	}
+	*/
 
 	public Controller(Game game) {
 		this.game = game;
@@ -95,5 +96,4 @@ public class Controller {
 				view.showError(Messages.UNKNOWN_COMMAND);
 		}	
 	}
-
 }

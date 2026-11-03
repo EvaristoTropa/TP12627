@@ -12,7 +12,7 @@ import pvz.view.Messages;
  * @author Rodrigo Ferrer López
 */
 
-public class BasicZombie {
+public class BasicZombie extends Zombie {
     private Position position;
 	private Game game;
 	private int hp, counter;
@@ -87,10 +87,10 @@ public class BasicZombie {
     
     public void update() {
     	if (isAlive()) {
-    		Position targetPos = Position.right(position);
+    		Position targetPos = Position.left(position);
     		if (game.isEmpty(targetPos) && counter >= PERIOD) {
     			position = targetPos;
-    			targetPos = Position.right(position);
+    			targetPos = Position.left(position);
     			counter = 0;
     		}
     		game.attackPlant(targetPos, DAMAGE);

@@ -1,4 +1,4 @@
-package pvz.control.commands;
+package pvz.control.command;
 
 import pvz.logic.GameModel;
 import pvz.view.GameView;

@@ -70,6 +70,18 @@ public class Position {
     }
     
     /**
+     * Creates a new position to the left of a previous one.
+     * 
+     * @param other Position to modify
+     * 
+     * @return a new position to the left (the other stays intact).
+     */
+    
+    public static Position left(Position other) {
+    	return new Position(other.row(), other.column() - 1);
+    }
+    
+    /**
      * Creates a new position to the right of a previous one.
      * 
      * @param other Position to modify
