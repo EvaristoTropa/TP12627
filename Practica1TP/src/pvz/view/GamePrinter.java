@@ -24,6 +24,8 @@ import java.util.Scanner;
  * <p>This class is read-only with respect to {@link Game}: it queries game state
  * through the public API and never modifies it. All string literals and format
  * templates are sourced from {@link Messages}.
+ * 
+ * @author Rodrigo Ferrer López (filled template)
  */
 public class GamePrinter implements GameView {
 
@@ -62,9 +64,9 @@ public class GamePrinter implements GameView {
 	 */
 	private String getInfo() {
 		StringBuilder buffer = new StringBuilder();
-
-		// TODO fill your code
-
+		buffer.append(String.format(Messages.NUMBER_OF_CYCLES, this.game.getCycles()));
+		buffer.append(String.format(Messages.NUMBER_OF_COINS, this.game.getCycles()));
+		buffer.append(String.format(Messages.REMAINING_ZOMBIES, this.game.getRemainingZombies()));
 		return buffer.toString();
 	}
 
@@ -97,8 +99,13 @@ public class GamePrinter implements GameView {
 	 */
 	@Override
 	public void showEndMessage() {
-		StringBuilder buffer = new StringBuilder(Messages.GAME_OVER);
-		// TODO fill your code
+		StringBuilder buffer = new StringBuilder(Messages.GAME_OVER + '\n');
+		if (game.playerWins())
+			buffer.append(Messages.PLAYER_WINS);
+		else if (game.playerQuits())
+			buffer.append(Messages.PLAYER_QUITS);
+		else
+			buffer.append(Messages.ZOMBIES_WIN);
 		System.out.println(buffer);
 	}
 
