@@ -34,12 +34,19 @@ public class ResetCommand extends Command {
 			seed = Integer.parseInt(commandWords[2]);
 			return this;
 		}
+		else if (commandWords.length == 1)
+			return this;
+		else if (commandWords.length < 3)
+			return new ErrorCommand(Messages.COMMAND_PARAMETERS_MISSING);
 		else
-			return null;
+			return new ErrorCommand(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
 	}
 	
 	@Override
 	public void execute(GameModel model, GameView view) {
-		model.reset();
+		if (level == null)
+			model.reset();
+		else
+		model.reset(level, seed);
 	}
 }

@@ -31,7 +31,7 @@ class ZombieTest {
     void setUp() {
         game = new Game(0L, Level.EASY);
         startPosition = new Position(0, 5);
-        zombie = new BasicZombie(startPosition, game);
+        zombie = new BasicZombie(game, startPosition);
     }
 
     // ------------------------------------------------------------------ //
@@ -61,29 +61,29 @@ class ZombieTest {
     @Test
     void receivePlantAttack_reducesHealth() {
         // Zombie starts with 5 health; after 4 hits it should still be alive.
-        zombie.receiveAttack(4);
+        zombie.receivePlantAttack(4);
         assertTrue(zombie.isAlive());
     }
 
     @Test
     void receivePlantAttack_5hits_kills() {
-        zombie.receiveAttack(1);
-        zombie.receiveAttack(1);
-        zombie.receiveAttack(1);
-        zombie.receiveAttack(1);
-        zombie.receiveAttack(1);
+        zombie.receivePlantAttack(1);
+        zombie.receivePlantAttack(1);
+        zombie.receivePlantAttack(1);
+        zombie.receivePlantAttack(1);
+        zombie.receivePlantAttack(1);
         assertFalse(zombie.isAlive());
     }
 
     @Test
     void receivePlantAttack_4hits_stillAlive() {
-        for (int i = 0; i < 4; i++) zombie.receiveAttack(1);
+        for (int i = 0; i < 4; i++) zombie.receivePlantAttack(1);
         assertTrue(zombie.isAlive());
     }
 
     @Test
     void receivePlantAttack_lethalInOneBlow() {
-        zombie.receiveAttack(99);
+        zombie.receivePlantAttack(99);
         assertFalse(zombie.isAlive());
     }
 
@@ -158,7 +158,7 @@ class ZombieTest {
     @Test
     void update_plantToLeft_zombieDoesNotMove() {
         // Place a sunflower at (0, 4) — directly to the left of the zombie at (0, 5).
-        game.addGameObject("s", new Position(0, 4));
+        game.addPlant("s", new Position(0, 4));
 
         // After 3 updates the zombie would normally move, but the cell is occupied.
         // Note: the dead sunflower (killed by zombie attack during these cycles) still
@@ -176,7 +176,7 @@ class ZombieTest {
 
     @Test
     void deadZombie_update_doesNotMove() {
-        zombie.receiveAttack(99); // kill
+        zombie.receivePlantAttack(99); // kill
         assertFalse(zombie.isAlive());
 
         for (int i = 0; i < 5; i++) zombie.update();
@@ -187,7 +187,7 @@ class ZombieTest {
 
     @Test
     void deadZombie_update_doesNotThrow() {
-        zombie.receiveAttack(99);
+        zombie.receivePlantAttack(99);
         assertDoesNotThrow(() -> {
             for (int i = 0; i < 3; i++) zombie.update();
         });
@@ -218,7 +218,7 @@ class ZombieTest {
         // of the sunflower disappears from the board after the zombie attacks
         // and the game removes dead entities.
 
-        game.addGameObject("s", new Position(0, 4)); // sunflower health = 1
+        game.addPlant("s", new Position(0, 4)); // sunflower health = 1
 
         // zombie attacks (0, 4) on every update call
         zombie.update(); // sunflower takes 1 damage → health = 0

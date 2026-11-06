@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.Collections;
 
+import pvz.logic.gameobjects.BasicZombie;
 import pvz.logic.gameobjects.Zombie;
 import pvz.logic.GameWorld;
 import pvz.utils.Position;
@@ -18,17 +19,17 @@ import pvz.utils.Position;
 
 public class ZombieFactory {
 	private static final List<Zombie> AVAILABLE_ZOMBIES = Arrays.asList(
-		new BasicZombie()
+		new BasicZombie(null, null)
 	);
 	
 	public static Zombie spawnZombie(String zombieName, GameWorld game, Position position) {
-		Zombie zombie = zombie.identify(zombieName);
-		if (zombie != null && !game.isEmpty(position)) {
-			zombie.setPosition(position);
-			return zombie;
-		}
+		int i = 0;
+		while (i < AVAILABLE_ZOMBIES.size() && !AVAILABLE_ZOMBIES.get(i).matchZombie(zombieName))
+			i++;
+		if (i < AVAILABLE_ZOMBIES.size() && game.isEmpty(position) && game.isInsideBoard(position))
+			return AVAILABLE_ZOMBIES.get(i).create(game, position);
 		else
-			return null;
+		return null;
 	}
 	
 	public static List<Zombie> getAvailableZombies() {

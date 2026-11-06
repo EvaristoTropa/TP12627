@@ -29,7 +29,7 @@ class PeashooterTest {
     void setUp() {
         game = new Game(0L, Level.EASY);
         position = new Position(0, 3);
-        peashooter = new Peashooter(position, game);
+        peashooter = new Peashooter(game, position);
     }
 
     // ------------------------------------------------------------------ //
@@ -54,7 +54,7 @@ class PeashooterTest {
 
     @Test
     void cost_is50() {
-        assertEquals(50, Peashooter.COST);
+        assertEquals(50, Peashooter.getStaticCost());
     }
 
     // ------------------------------------------------------------------ //
@@ -64,34 +64,34 @@ class PeashooterTest {
     @Test
     void receiveZombieAttack_reducesHealth() {
         // Peashooter starts with 3 health. After 1 hit it should still be alive.
-        peashooter.receiveDamage(1);
+        peashooter.receiveZombieAttack(1);
         assertTrue(peashooter.isAlive());
     }
 
     @Test
     void receiveZombieAttack_3hits_kills() {
-        peashooter.receiveDamage(1);
-        peashooter.receiveDamage(1);
-        peashooter.receiveDamage(1);
+        peashooter.receiveZombieAttack(1);
+        peashooter.receiveZombieAttack(1);
+        peashooter.receiveZombieAttack(1);
         assertFalse(peashooter.isAlive());
     }
 
     @Test
     void receiveZombieAttack_2hits_stillAlive() {
-        peashooter.receiveDamage(1);
-        peashooter.receiveDamage(1);
+        peashooter.receiveZombieAttack(1);
+        peashooter.receiveZombieAttack(1);
         assertTrue(peashooter.isAlive());
     }
 
     @Test
     void receiveZombieAttack_lethal_inOneBlow() {
-        peashooter.receiveDamage(99);
+        peashooter.receiveZombieAttack(99);
         assertFalse(peashooter.isAlive());
     }
 
     @Test
     void noDamage_stillAlive() {
-        peashooter.receiveDamage(0);
+        peashooter.receiveZombieAttack(0);
         assertTrue(peashooter.isAlive());
     }
 
@@ -120,7 +120,7 @@ class PeashooterTest {
 
     @Test
     void deadPeashooter_update_doesNotThrow() {
-        peashooter.receiveDamage(99);
+        peashooter.receiveZombieAttack(99);
         assertDoesNotThrow(() -> peashooter.update());
     }
 

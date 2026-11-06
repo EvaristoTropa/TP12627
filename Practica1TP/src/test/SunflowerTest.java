@@ -31,7 +31,7 @@ class SunflowerTest {
     void setUp() {
         game = new Game(0L, Level.EASY);
         position = new Position(0, 0);
-        sunflower = new Sunflower(position, game);
+        sunflower = new Sunflower(game, position);
     }
 
     // ------------------------------------------------------------------ //
@@ -55,7 +55,7 @@ class SunflowerTest {
 
     @Test
     void cost_is20() {
-        assertEquals(20, Sunflower.COST);
+        assertEquals(20, Sunflower.getStaticCost());
     }
 
     // ------------------------------------------------------------------ //
@@ -66,19 +66,19 @@ class SunflowerTest {
     void receiveZombieAttack_reducesHealth() {
         // Sunflower has 1 health; any positive damage kills it.
         // We verify isAlive() flips to false after taking lethal damage.
-        sunflower.receiveDamage(1);
+        sunflower.receiveZombieAttack(1);
         assertFalse(sunflower.isAlive());
     }
 
     @Test
     void receiveZombieAttack_belowZero_notAlive() {
-        sunflower.receiveDamage(99);
+        sunflower.receiveZombieAttack(99);
         assertFalse(sunflower.isAlive());
     }
 
     @Test
     void noDamage_stillAlive() {
-        sunflower.receiveDamage(0);
+        sunflower.receiveZombieAttack(0);
         assertTrue(sunflower.isAlive());
     }
 
@@ -99,6 +99,8 @@ class SunflowerTest {
 
         assertTrue(game.getCoins() > initialCoins,
                 "Sunflower should have generated coins within 10 updates");
+        assertTrue(updatesNeeded <= 10,
+                "Sunflower should have generated coins within 10 updates");
         assertEquals(initialCoins + 10, game.getCoins(),
                 "Sunflower should generate exactly 10 coins per cycle");
     }
@@ -108,7 +110,7 @@ class SunflowerTest {
         // Reset to a clean, known state before measuring the period:
         // the unbounded search above may advance the counter by an unknown amount.
         game = new Game(0L, Level.EASY);
-        sunflower = new Sunflower(position, game);
+        sunflower = new Sunflower(game, position);
         int coins = game.getCoins();
         int i = 0;
         while (game.getCoins() == coins && i < 10) { sunflower.update(); i++; }
@@ -128,7 +130,7 @@ class SunflowerTest {
 
     @Test
     void deadSunflower_doesNotGenerateCoins() {
-        sunflower.receiveDamage(1); // kill sunflower
+        sunflower.receiveZombieAttack(1); // kill sunflower
         assertFalse(sunflower.isAlive());
 
         int coinsBefore = game.getCoins();

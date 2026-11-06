@@ -194,7 +194,7 @@ class ControllerTest {
     @Test
     void addSunflower_byLongName_deductsCoins() {
         Game game = freshGame();
-        int expectedCoins = game.getCoins() - Sunflower.COST;
+        int expectedCoins = game.getCoins() - Sunflower.getStaticCost();
         run(game, "add sunflower 0 0\nexit\n");
         assertEquals(expectedCoins, game.getCoins()); // 50 - 20
     }
@@ -202,7 +202,7 @@ class ControllerTest {
     @Test
     void addSunflower_byShortName_deductsCoins() {
         Game game = freshGame();
-        int expectedCoins = game.getCoins() - Sunflower.COST;
+        int expectedCoins = game.getCoins() - Sunflower.getStaticCost();
         run(game, "add s 0 0\nexit\n");
         assertEquals(expectedCoins, game.getCoins());
     }
@@ -210,7 +210,7 @@ class ControllerTest {
     @Test
     void addPeashooter_byLongName_deductsCoins() {
         Game game = freshGame();
-        int expectedCoins = game.getCoins() - Peashooter.COST;
+        int expectedCoins = game.getCoins() - Peashooter.getStaticCost();
         run(game, "add peashooter 0 0\nexit\n");
         assertEquals(expectedCoins, game.getCoins()); // 50 - 50
     }
@@ -218,7 +218,7 @@ class ControllerTest {
     @Test
     void addPeashooter_byShortName_deductsCoins() {
         Game game = freshGame();
-        int expectedCoins = game.getCoins() - Peashooter.COST;
+        int expectedCoins = game.getCoins() - Peashooter.getStaticCost();
         run(game, "add p 0 0\nexit\n");
         assertEquals(expectedCoins, game.getCoins());
     }
@@ -235,7 +235,7 @@ class ControllerTest {
     void addCommand_shortFormAlias_works() {
         // 'a' is the short alias for 'add'
         Game game = freshGame();
-        int expectedCoins = game.getCoins() - Sunflower.COST;
+        int expectedCoins = game.getCoins() - Sunflower.getStaticCost();
         run(game, "a s 0 0\nexit\n");
         assertEquals(expectedCoins, game.getCoins());
     }
@@ -256,7 +256,7 @@ class ControllerTest {
         Game game = freshGame();
         int expectedCoins = game.getCoins();
         run(game, "add zombie 0 0\nexit\n");
-        assertEquals(50, game.getCoins());
+        assertEquals(expectedCoins, game.getCoins());
     }
 
     @Test
@@ -301,7 +301,7 @@ class ControllerTest {
     @Test
     void addCommand_occupiedPosition_coinsOnlyDeductedOnce() {
         Game game = freshGame();
-        int previousCoins = game.getCoins() - Sunflower.COST;
+        int previousCoins = game.getCoins() - Sunflower.getStaticCost();
         run(game, "add s 0 0\nadd s 0 0\nexit\n"); // second add at same pos
         // First add: 50 - 20 = 30. Second add should fail (position occupied).
         assertEquals(previousCoins, game.getCoins());
@@ -335,7 +335,7 @@ class ControllerTest {
     void addCommand_insufficientCoins_positionRemainsEmpty() {
         Game game = freshGame();
         // Buy a peashooter (50 coins) → coins = 0
-        int expectedCoins = game.getCoins() - Peashooter.COST;
+        int expectedCoins = game.getCoins() - Peashooter.getStaticCost();
         run(game, "add p 0 0\nadd s 0 1\nexit\n"); // second add has no coins
         assertEquals(expectedCoins, game.getCoins());
         // The sunflower at (0, 1) should not have been placed, so its position is empty

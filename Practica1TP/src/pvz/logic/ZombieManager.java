@@ -1,10 +1,11 @@
 package pvz.logic;
 
+import java.util.List;
 import java.util.Random;
 
 import pvz.control.Level;
-import pvz.logic.gameobjects.BasicZombie;
-import pvz.logic.gameobjects.ZombieList;
+import pvz.control.ZombieFactory;
+import pvz.logic.gameobjects.Zombie;
 import pvz.utils.Position;
 
 /**
@@ -18,19 +19,18 @@ import pvz.utils.Position;
  * @author Rodrigo Ferrer López (filled code);
  */
 
-public class ZombiesManager {
+public class ZombieManager {
 	private Game game;
 	private Level level;
 	private Random rand;
-	private int remainingZombies;
-	private ZombieList zombies;
+	private int zombiesToSpawn, zombiesToKill;
 
-	public ZombiesManager(Game game, Level level, Random rand) {
+	public ZombieManager(Game game, Level level, Random rand) {
 		this.game = game;
 		this.level = level;
 		this.rand = rand;
-		this.remainingZombies = level.getNumberOfZombies();
-		this.zombies = new ZombieList();
+		this.zombiesToSpawn = level.getNumberOfZombies();
+		this.zombiesToKill = this.zombiesToSpawn;
 	}
 
 	/**
@@ -74,12 +74,14 @@ public class ZombiesManager {
 
 	public boolean addZombie(int row) {
         Position pos = Game.newZombiePosition(row);
-		boolean canAdd = getRemainingZombies() > 0 && shouldAddZombie() && isEmpty(pos);
+		boolean canAdd = getRemainingZombies() > 0 && shouldAddZombie() && game.isEmpty(pos);
 
 		if(canAdd) {
-            BasicZombie z = new BasicZombie(pos, game);
-            zombies.add(z);
-            remainingZombies--;
+			List<Zombie> zombies = ZombieFactory.getAvailableZombies();
+			int i = rand.nextInt(zombies.size());
+            Zombie zombie = zombies.get(i).create(game, pos);
+            game.addGameObject(zombie);
+            zombiesToSpawn--;
 		}
 		return canAdd;
 	}
@@ -91,7 +93,7 @@ public class ZombiesManager {
 	 */
     
     public int getRemainingZombies() {
-        return remainingZombies;
+        return zombiesToSpawn;
     }
     
     /**
@@ -101,49 +103,11 @@ public class ZombiesManager {
 	 */
     
     public boolean doZombiesReachedTheHouse() {
-        return zombies.anyInColumn(-1);
+        return game.anyInColumn(-1);
     }
     
-    /**
-	 * Damages a zombie in a given position by a given amount.
-	 * 
-	 * @param p Position to check, damage Damage to deal
-	 */
-    
-    public void damageZombie(Position p, int damage) {
-        zombies.damage(p, damage);
-    }
-    
-    /**
-	 * Fetches the icon of a zombie in a given position.
-	 * 
-	 * @param p Position to check
-	 * 
-	 * @return the zombie's icon if found, an empty string otherwise.
-	 */
-    
-    public String iconInPosition(Position p) {
-        return zombies.iconInPosition(p);
-    }
-    
-    /**
-	 * Checks if there are no zombies in a given position.
-	 * 
-	 * @param p Position to check
-	 * 
-	 * @return <code>true</code> if no zombie has been found in that position.
-	 */
-    
-    public boolean isEmpty(Position p) {
-        return zombies.isEmpty(p);
-    }
-    
-    /**
-	 * Updates all zombies in the list.
-	 */
-    
-    public void update() {
-        zombies.update();
+    public void zombieDies() {
+    	zombiesToKill--;
     }
     
     /**
@@ -153,14 +117,6 @@ public class ZombiesManager {
 	 */
     
     public boolean allZombiesWereKilled() {
-        return remainingZombies == 0 && zombies.size() == 0;
-    }
-    
-    /**
-	 * Removes all dead zombies in the list.
-	 */
-    
-    public void removeDead() {
-        zombies.removeDead();
+        return zombiesToSpawn == 0 && zombiesToKill == 0;
     }
 }

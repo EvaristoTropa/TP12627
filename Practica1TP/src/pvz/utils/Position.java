@@ -14,6 +14,11 @@ public class Position {
         this.col = col;
     }
     
+    public Position(Position other) {
+    	this.row = other.row;
+    	this.col = other.col;
+    }
+    
     /**
      * Fetches a position's row.
      * 
@@ -42,9 +47,11 @@ public class Position {
      * @return <code>true</code> if both positions' row components match.
      */
     
+    /*
     public boolean isHorizontallyAligned(Position p) {
         return row == p.row;
     }
+    */
     
     /**
      * Checks if two positions are in the same column.

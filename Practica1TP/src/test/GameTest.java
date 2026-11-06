@@ -61,25 +61,25 @@ class GameTest {
 
     @Test
     void addSunflower_byLongName_deductsCoins() {
-        game.addGameObject("sunflower", new Position(0, 0));
+        game.addPlant("sunflower", new Position(0, 0));
         assertEquals(30, game.getCoins());
     }
 
     @Test
     void addSunflower_byShortName_deductsCoins() {
-        game.addGameObject("s", new Position(0, 0));
+        game.addPlant("s", new Position(0, 0));
         assertEquals(30, game.getCoins());
     }
 
     @Test
     void addPeashooter_byLongName_deductsCoins() {
-        game.addGameObject("peashooter", new Position(0, 0));
+        game.addPlant("peashooter", new Position(0, 0));
         assertEquals(0, game.getCoins());
     }
 
     @Test
     void addPeashooter_byShortName_deductsCoins() {
-        game.addGameObject("p", new Position(0, 0));
+        game.addPlant("p", new Position(0, 0));
         assertEquals(0, game.getCoins());
     }
 
@@ -90,14 +90,14 @@ class GameTest {
     @Test
     void addSunflower_positionIsOccupied() {
         Position pos = new Position(1, 2);
-        game.addGameObject("s", pos);
+        game.addPlant("s", pos);
         assertFalse(game.isEmpty(pos));
     }
 
     @Test
     void addPeashooter_positionIsOccupied() {
         Position pos = new Position(2, 3);
-        game.addGameObject("p", pos);
+        game.addPlant("p", pos);
         assertFalse(game.isEmpty(pos));
     }
 
@@ -112,33 +112,33 @@ class GameTest {
 
     @Test
     void addSunflower_insufficientCoins_positionRemainsEmpty() {
-        game.addGameObject("p", new Position(0, 0)); // costs 50 → coins = 0
+        game.addPlant("p", new Position(0, 0)); // costs 50 → coins = 0
         Position pos = new Position(0, 1);
-        game.addGameObject("s", pos);                // costs 20, but 0 coins
+        game.addPlant("s", pos);                // costs 20, but 0 coins
         assertTrue(game.isEmpty(pos));
     }
 
     @Test
     void addSunflower_insufficientCoins_coinsUnchanged() {
-        game.addGameObject("p", new Position(0, 0)); // coins = 0
-        game.addGameObject("s", new Position(0, 1));
+        game.addPlant("p", new Position(0, 0)); // coins = 0
+        game.addPlant("s", new Position(0, 1));
         assertEquals(0, game.getCoins());
     }
 
     @Test
     void addPeashooter_insufficientCoins_positionRemainsEmpty() {
-        game.addGameObject("s", new Position(0, 0)); // coins = 30
-        game.addGameObject("s", new Position(0, 1)); // coins = 10
+        game.addPlant("s", new Position(0, 0)); // coins = 30
+        game.addPlant("s", new Position(0, 1)); // coins = 10
         Position pos = new Position(0, 2);
-        game.addGameObject("p", pos);                // costs 50, only 10 coins
+        game.addPlant("p", pos);                // costs 50, only 10 coins
         assertTrue(game.isEmpty(pos));
     }
 
     @Test
     void addPeashooter_insufficientCoins_coinsUnchanged() {
-        game.addGameObject("s", new Position(0, 0));
-        game.addGameObject("s", new Position(0, 1));
-        game.addGameObject("p", new Position(0, 2));
+        game.addPlant("s", new Position(0, 0));
+        game.addPlant("s", new Position(0, 1));
+        game.addPlant("p", new Position(0, 2));
         assertEquals(10, game.getCoins());
     }
 
@@ -182,38 +182,38 @@ class GameTest {
 
     @Test
     void checkGameObject_sunflowerLongName() {
-        assertTrue(game.checkGameObject("sunflower"));
+        assertTrue(game.checkPlant("sunflower"));
     }
 
     @Test
     void checkGameObject_sunflowerShortName() {
-        assertTrue(game.checkGameObject("s"));
+        assertTrue(game.checkPlant("s"));
     }
 
     @Test
     void checkGameObject_peashooterLongName() {
-        assertTrue(game.checkGameObject("peashooter"));
+        assertTrue(game.checkPlant("peashooter"));
     }
 
     @Test
     void checkGameObject_peashooterShortName() {
-        assertTrue(game.checkGameObject("p"));
+        assertTrue(game.checkPlant("p"));
     }
 
     @Test
     void checkGameObject_caseInsensitive() {
-        assertTrue(game.checkGameObject("SUNFLOWER"));
-        assertTrue(game.checkGameObject("S"));
-        assertTrue(game.checkGameObject("PEASHOOTER"));
-        assertTrue(game.checkGameObject("P"));
+        assertTrue(game.checkPlant("SUNFLOWER"));
+        assertTrue(game.checkPlant("S"));
+        assertTrue(game.checkPlant("PEASHOOTER"));
+        assertTrue(game.checkPlant("P"));
     }
 
     @Test
     void checkGameObject_unknownName_returnsFalse() {
-        assertFalse(game.checkGameObject("zombie"));
-        assertFalse(game.checkGameObject("tree"));
-        assertFalse(game.checkGameObject(""));
-        assertFalse(game.checkGameObject("peashoot")); // common typo
+        assertFalse(game.checkPlant("zombie"));
+        assertFalse(game.checkPlant("tree"));
+        assertFalse(game.checkPlant(""));
+        assertFalse(game.checkPlant("peashoot")); // common typo
     }
 
     // ------------------------------------------------------------------ //
@@ -240,7 +240,7 @@ class GameTest {
         // That means 3 additional update() calls after placement trigger the first generation.
         // (Internal cooldown counter: 0→1→2→3→generate, 4 updates total from object creation,
         //  but the first update runs in the same cycle as placement, leaving 3 more to go.)
-        game.addGameObject("s", new Position(0, 0)); // coins = 30, counter starts at 0
+        game.addPlant("s", new Position(0, 0)); // coins = 30, counter starts at 0
         game.update(); // counter 0→1
         game.update(); // counter 1→2
         game.update(); // counter 2→3
@@ -251,7 +251,7 @@ class GameTest {
 
     @Test
     void sunflower_generatesCoins_periodically() {
-        game.addGameObject("s", new Position(0, 0)); // coins = 30
+        game.addPlant("s", new Position(0, 0)); // coins = 30
 
         // 4 updates for the first generation (see sunflower_generatesCoins_after3GameCycles)
         for (int i = 0; i < 4; i++) game.update();
@@ -281,7 +281,7 @@ class GameTest {
 
     @Test
     void reset_restoresCoins() {
-        game.addGameObject("s", new Position(0, 0));
+        game.addPlant("s", new Position(0, 0));
         game.reset();
         assertEquals(50, game.getCoins());
     }
@@ -303,7 +303,7 @@ class GameTest {
     @Test
     void reset_clearsPlants() {
         Position pos = new Position(0, 0);
-        game.addGameObject("s", pos);
+        game.addPlant("s", pos);
         game.reset();
         assertTrue(game.isEmpty(pos));
     }

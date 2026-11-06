@@ -1,9 +1,12 @@
 package pvz.control.command;
 
-import pvz.control.PlantFactory;
-import pvz.logic.gameobjects.Plant;
 import pvz.utils.Position;
+
+import java.util.List;
+
+import pvz.control.PlantFactory;
 import pvz.logic.GameModel;
+import pvz.logic.gameobjects.Plant;
 import pvz.view.GameView;
 import pvz.view.Messages;
 
@@ -33,16 +36,36 @@ public class AddPlantCommand extends Command {
 	public Command create(String[] commandWords) {
 		if (commandWords.length == 4) {
 			plantName = commandWords[1];
-			position = new Position(Integer.parseInt(commandWords[3]), Integer.parseInt(commandWords[2]));
-			return this;
+			int i = 0;
+			List<Plant> plants = PlantFactory.getAvailablePlants();
+			while (i < plants.size() && plants.get(i).matchPlant(plantName))
+				i++;
+			if (i < plants.size()) {
+				position = new Position(Integer.parseInt(commandWords[3]), Integer.parseInt(commandWords[2]));
+				return this;
+			}
+			else
+				return new ErrorCommand(Messages.INVALID_GAME_OBJECT);
 		}
+		else if (commandWords.length < 4)
+			return new ErrorCommand(Messages.COMMAND_PARAMETERS_MISSING);
 		else
-			return null;
+			return new ErrorCommand(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
 	}
 	
 	@Override
 	public void execute(GameModel model, GameView view) {
-		Plant plant = PlantFactory.spawnPlant(this.plantName, model, position);
-		model.addPlant(plant);
+		if (!model.isEmpty(position) || !model.isInsideBoard(position))
+			view.showError(Messages.INVALID_POSITION);
+		else {
+			int i = 0;
+			List<Plant> plants = PlantFactory.getAvailablePlants();
+			while (i < plants.size() && plants.get(i).matchPlant(plantName))
+				i++;
+			if (model.getCoins() < plants.get(i).getCost())
+				view.showError(Messages.NOT_ENOUGH_COINS);
+			else
+			model.addPlant(plantName, position);
+		}
 	}
 }

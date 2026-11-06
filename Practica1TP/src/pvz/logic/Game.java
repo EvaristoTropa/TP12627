@@ -1,14 +1,15 @@
 package pvz.logic;
 
+import java.util.List;
 import java.util.Random;
 
 import pvz.control.Level;
+import pvz.control.PlantFactory;
+import pvz.control.ZombieFactory;
 import pvz.utils.Position;
-import pvz.view.Messages;
-import pvz.logic.gameobjects.PeashooterList;
-import pvz.logic.gameobjects.SunflowerList;
-import pvz.logic.gameobjects.Peashooter;
-import pvz.logic.gameobjects.Sunflower;
+import pvz.logic.gameobjects.GameObject;
+import pvz.logic.gameobjects.Plant;
+import pvz.logic.gameobjects.Zombie;
 
 /**
  * The singular most important component of the game.
@@ -18,22 +19,20 @@ import pvz.logic.gameobjects.Sunflower;
  * @author Rodrigo Ferrer López
  */
 
-public class Game {
+public class Game implements GameStatus, GameWorld, GameModel {
+	public static final int INITIAL_COINS = 50;
+	
 	private long seed;
 	private Level level;
 	private Random rand;
-	private ZombiesManager zombieManager;
-	private PeashooterList peashooterList;
-	private SunflowerList sunflowerList;
+	private GameObjectContainer gameObjects;
+	private ZombieManager zombieManager;
 	private int cycles;
 	private int coins;
-	private boolean quit;
-	public static final int NUM_ROWS = 4;
-	public static final int NUM_COLS = 8;
-	public static final int INITIAL_COINS = 50;
+	private boolean playerQuits;
 	
 	public Game (long seed, Level level) {
-		reset();
+		reset(level, seed);
 	}
 	
 	/**
@@ -45,12 +44,8 @@ public class Game {
      */
 	
 	public String positionToString(Position position) {
-		if (!sunflowerList.isEmpty(position))
-			return sunflowerList.iconInPosition(position);
-		else if (!peashooterList.isEmpty(position))
-			return peashooterList.iconInPosition(position);
-		else if (!zombieManager.isEmpty(position))
-			return zombieManager.iconInPosition(position);
+		if (!gameObjects.isEmpty(position))
+			return gameObjects.iconInPosition(position);
 		else
 			return "";
 	}
@@ -63,11 +58,20 @@ public class Game {
 	 * @return <code>true</code> if the object's name is in the whitelist.
 	 */
 	
-	public boolean checkGameObject(String objectName) {
-		return objectName.equalsIgnoreCase(Peashooter.shortName())
-		|| objectName.equalsIgnoreCase(Peashooter.longName())
-		|| objectName.equalsIgnoreCase(Sunflower.shortName())
-		|| objectName.equalsIgnoreCase(Sunflower.longName());
+	public boolean checkPlant(String plantName) {
+		int i = 0;
+		List<Plant> plants = PlantFactory.getAvailablePlants();
+		while (i < plants.size() && plants.get(i).matchPlant(plantName))
+			i++;
+		return i < plants.size();
+	}
+	
+	public boolean checkZombie(String zombieName) {
+		int i = 0;
+		List<Zombie> zombies = ZombieFactory.getAvailableZombies();
+		while (i < zombies.size() && zombies.get(i).matchZombie(zombieName))
+			i++;
+		return i < zombies.size();
 	}
 	
 	/**
@@ -127,7 +131,7 @@ public class Game {
 	 */
 	
 	public boolean playerQuits() {
-		return quit;
+		return playerQuits;
 	}
 	
 	/**
@@ -135,7 +139,7 @@ public class Game {
 	 */
 	
 	public void quit() {
-		quit = true;
+		playerQuits = true;
 	}
 	
 	/**
@@ -145,26 +149,29 @@ public class Game {
 	public void update() {
 		cycles++;
 		zombieManager.addZombie();
-		sunflowerList.update();
-		peashooterList.update();
-		zombieManager.update();
-		sunflowerList.removeDead();
-		peashooterList.removeDead();
-		zombieManager.removeDead();
+		gameObjects.update();
+		gameObjects.removeDead();
 	}
 	
 	/**
 	 * Rewinds the game to its initial state.
 	 */
 	
-	public void reset() {
+	public void reset(Level level, long seed) {
 		rand = new Random(seed);
-		zombieManager = new ZombiesManager(this, level, rand);
-		peashooterList = new PeashooterList();
-		sunflowerList = new SunflowerList();
+		zombieManager = new ZombieManager(this, level, rand);
+		gameObjects = new GameObjectContainer();
 		cycles = 0;
 		coins = INITIAL_COINS;
-		quit = false;
+		playerQuits = false;
+	}
+	
+	public void reset() {
+		reset(this.level, this.seed);
+	}
+	
+	public void addGameObject(GameObject object) {
+		gameObjects.add(object);
 	}
 	
 	/**
@@ -173,24 +180,20 @@ public class Game {
 	 * @param plantType Plant to spawn, position Position of the new plant
 	 */
 	
-	public void addGameObject(String plantType,  Position position) {
+	public void addPlant(String plantName, Position position) {
 		if (isEmpty(position) && isInsideBoard(position)) {
-			if ((plantType.equalsIgnoreCase(Peashooter.shortName())
-					|| plantType.equalsIgnoreCase(Peashooter.longName()))
-					&& coins >= Peashooter.COST) {
-						peashooterList.add(new Peashooter(position, this));
-						coins -= Peashooter.COST;
+		Plant plant = PlantFactory.spawnPlant(plantName, this, position);
+		if (coins >= plant.getCost()) {
+			addGameObject(plant);
+			coins -= plant.getCost();
 			}
-			else if ((plantType.equalsIgnoreCase(Sunflower.shortName())
-					|| plantType.equalsIgnoreCase(Sunflower.longName()))
-					&& coins >= Sunflower.COST) {
-						sunflowerList.add(new Sunflower(position, this));
-						coins -= Sunflower.COST;
-			}else {
-				System.out.println(Messages.INVALID_GAME_OBJECT);
-			}
-		}else {
-			System.out.println(Messages.INVALID_POSITION);
+		}
+	}
+	
+	public void addZombie(String zombieName, Position position) {
+		if (isEmpty(position) && isInsideExpandedBoard(position)) {
+		Zombie zombie = ZombieFactory.spawnZombie(zombieName, this, position);
+		addGameObject(zombie);
 		}
 	}
 	
@@ -211,7 +214,7 @@ public class Game {
 	 */
 	
 	public void attackZombie(Position p, int damage) {
-		zombieManager.damageZombie(p, damage);
+		gameObjects.attackZombie(p, damage);
 	}
 	
 	/**
@@ -221,8 +224,7 @@ public class Game {
 	 */
 	
 	public void attackPlant(Position p, int damage) {
-		peashooterList.receiveDamage(p, damage);
-		sunflowerList.receiveDamage(p, damage);
+		gameObjects.attackPlant(p, damage);
 	}
 	
 	/**
@@ -234,7 +236,7 @@ public class Game {
 	 */
 	
 	public boolean isEmpty(Position p) {
-		return zombieManager.isEmpty(p) && peashooterList.isEmpty(p) && sunflowerList.isEmpty(p);
+		return gameObjects.isEmpty(p);
 	}
 	
 	/**
@@ -246,7 +248,7 @@ public class Game {
 	 */
 	
 	public boolean containsZombie(Position p) {
-		return !zombieManager.isEmpty(p);
+		return gameObjects.containsZombie(p);
 	}
 	
 	/**
@@ -274,5 +276,18 @@ public class Game {
 	public boolean isInsideBoard(Position p) {
 		return p.row() >= 0 && p.row() < NUM_ROWS
 		&& p.column() >= 0 && p.column() < NUM_COLS;
+	}
+	
+	public boolean isInsideExpandedBoard(Position p) {
+		return p.row() >= 0 && p.row() < NUM_ROWS
+		&& p.column() >= -1 && p.column() <= NUM_COLS;
+	}
+	
+	public void zombieDies() {
+		zombieManager.zombieDies();
+	}
+	
+	public boolean anyInColumn(int column) {
+		return gameObjects.anyInColumn(column);
 	}
 }

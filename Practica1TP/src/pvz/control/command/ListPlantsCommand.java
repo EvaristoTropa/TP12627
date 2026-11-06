@@ -29,8 +29,10 @@ public class ListPlantsCommand extends Command {
 	public Command create(String[] commandWords) {
 		if (commandWords.length == 1)
 			return this;
+		else if (commandWords.length < 1)
+			return new ErrorCommand(Messages.COMMAND_PARAMETERS_MISSING);
 		else
-			return null;
+			return new ErrorCommand(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
 	}
 	
 	@Override

@@ -28,7 +28,7 @@ public class UpdateCommand extends Command {
 		if (commandWords.length <= 1)
 			return this;
 		else
-			return null;
+			return new ErrorCommand(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
 	}
 	
 	@Override

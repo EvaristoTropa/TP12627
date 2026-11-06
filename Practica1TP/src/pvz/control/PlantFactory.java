@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.Collections;
 
+import pvz.logic.gameobjects.Peashooter;
 import pvz.logic.gameobjects.Plant;
+import pvz.logic.gameobjects.Sunflower;
 import pvz.logic.GameWorld;
 import pvz.utils.Position;
 
@@ -18,18 +20,18 @@ import pvz.utils.Position;
 
 public class PlantFactory {
 	private static final List<Plant> AVAILABLE_PLANTS = Arrays.asList(
-		new Peashooter(),
-		new Sunflower()
+		new Peashooter(null, null),
+		new Sunflower(null, null)
 	);
 	
 	public static Plant spawnPlant(String plantName, GameWorld game, Position position) {
-		Plant plant = plant.identify(plantName);
-		if (plant != null && !game.isEmpty(position)) {
-			plant.setPosition(position);
-			return plant;
-		}
+		int i = 0;
+		while (i < AVAILABLE_PLANTS.size() && !AVAILABLE_PLANTS.get(i).matchPlant(plantName))
+			i++;
+		if (i < AVAILABLE_PLANTS.size() && game.isEmpty(position) && game.isInsideBoard(position))
+			return AVAILABLE_PLANTS.get(i).create(game, position);
 		else
-			return null;
+		return null;
 	}
 	
 	public static List<Plant> getAvailablePlants() {
