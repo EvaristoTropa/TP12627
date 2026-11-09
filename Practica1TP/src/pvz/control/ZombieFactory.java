@@ -6,8 +6,8 @@ import java.util.Collections;
 
 import pvz.logic.gameobjects.BasicZombie;
 import pvz.logic.gameobjects.Zombie;
+import utils.Position;
 import pvz.logic.GameWorld;
-import pvz.utils.Position;
 
 /**
  * Implementation of the Factory pattern for zombies.

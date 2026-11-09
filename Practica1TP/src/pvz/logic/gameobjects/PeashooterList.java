@@ -1,6 +1,6 @@
 package pvz.logic.gameobjects;
 
-import pvz.utils.Position;
+import utils.Position;
 
 
 /**

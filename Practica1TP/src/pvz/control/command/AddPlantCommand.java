@@ -1,7 +1,5 @@
 package pvz.control.command;
 
-import pvz.utils.Position;
-
 import java.util.List;
 
 import pvz.control.PlantFactory;
@@ -9,6 +7,7 @@ import pvz.logic.GameModel;
 import pvz.logic.gameobjects.Plant;
 import pvz.view.GameView;
 import pvz.view.Messages;
+import utils.Position;
 
 /**
  * Command that adds a plant in a specified position.
@@ -29,7 +28,7 @@ public class AddPlantCommand extends Command {
 	
 	@Override
 	public boolean matchCommand(String command) {
-		return command == name || command == shortcut;
+		return command.equalsIgnoreCase(name) || command.equalsIgnoreCase(shortcut);
 	}
 	
 	@Override
@@ -38,7 +37,7 @@ public class AddPlantCommand extends Command {
 			plantName = commandWords[1];
 			int i = 0;
 			List<Plant> plants = PlantFactory.getAvailablePlants();
-			while (i < plants.size() && plants.get(i).matchPlant(plantName))
+			while (i < plants.size() && !plants.get(i).matchPlant(plantName))
 				i++;
 			if (i < plants.size()) {
 				position = new Position(Integer.parseInt(commandWords[3]), Integer.parseInt(commandWords[2]));
@@ -60,12 +59,15 @@ public class AddPlantCommand extends Command {
 		else {
 			int i = 0;
 			List<Plant> plants = PlantFactory.getAvailablePlants();
-			while (i < plants.size() && plants.get(i).matchPlant(plantName))
+			while (i < plants.size() && !plants.get(i).matchPlant(plantName))
 				i++;
 			if (model.getCoins() < plants.get(i).getCost())
 				view.showError(Messages.NOT_ENOUGH_COINS);
-			else
+			else {
 			model.addPlant(plantName, position);
+			model.update();
+			view.showGame();
+			}
 		}
 	}
 }

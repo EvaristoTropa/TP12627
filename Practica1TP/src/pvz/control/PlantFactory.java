@@ -7,8 +7,8 @@ import java.util.Collections;
 import pvz.logic.gameobjects.Peashooter;
 import pvz.logic.gameobjects.Plant;
 import pvz.logic.gameobjects.Sunflower;
+import utils.Position;
 import pvz.logic.GameWorld;
-import pvz.utils.Position;
 
 /**
  * Implementation of the Factory pattern for plants.

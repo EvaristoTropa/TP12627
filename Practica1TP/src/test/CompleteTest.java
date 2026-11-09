@@ -24,6 +24,7 @@ public class CompleteTest {
   private List<String> testFilesPrefixes;
 
   public CompleteTest(String testResources) {
+	  System.out.println(this.getClass().getClassLoader().getResource(testResources));
     try {
       this.resourcesDir = Paths.get(Objects.requireNonNull(this.getClass().getClassLoader().getResource(testResources)).toURI());
     } catch (URISyntaxException | NullPointerException e) {

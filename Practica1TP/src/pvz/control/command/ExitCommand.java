@@ -20,7 +20,7 @@ public class ExitCommand extends Command {
 	
 	@Override
 	public boolean matchCommand(String command) {
-		return command == name || command == shortcut;
+		return command.equalsIgnoreCase(name) || command.equalsIgnoreCase(shortcut);
 	}
 	
 	@Override

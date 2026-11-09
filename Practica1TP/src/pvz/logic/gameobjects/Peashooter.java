@@ -1,7 +1,7 @@
 package pvz.logic.gameobjects;
 
-import pvz.utils.Position;
 import pvz.view.Messages;
+import utils.Position;
 import pvz.logic.Game;
 
 /**

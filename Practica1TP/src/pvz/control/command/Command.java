@@ -39,7 +39,7 @@ public abstract class Command {
 	
 	public static Command parse(String[] commandWords) {
 		int i = 0;
-		while (i < AVAILABLE_COMMANDS.size() && AVAILABLE_COMMANDS.get(i).matchCommand(commandWords[0]))
+		while (i < AVAILABLE_COMMANDS.size() && !AVAILABLE_COMMANDS.get(i).matchCommand(commandWords[0]))
 			i++;
 		if (i < AVAILABLE_COMMANDS.size()) {
 			Command command = AVAILABLE_COMMANDS.get(i).create(commandWords);

@@ -24,18 +24,21 @@ public class ResetCommand extends Command {
 	
 	@Override
 	public boolean matchCommand(String command) {
-		return command == name || command == shortcut;
+		return command.equalsIgnoreCase(name) || command.equalsIgnoreCase(shortcut);
 	}
 	
 	@Override
 	public Command create(String[] commandWords) {
 		if (commandWords.length == 3) {
 			level = Level.valueOfIgnoreCase(commandWords[1]);
-			seed = Integer.parseInt(commandWords[2]);
+			seed = Integer.toUnsignedLong(Integer.parseInt(commandWords[2]));
 			return this;
 		}
-		else if (commandWords.length == 1)
+		else if (commandWords.length == 1) {
+			level = null;
+			seed = 0L;
 			return this;
+		}
 		else if (commandWords.length < 3)
 			return new ErrorCommand(Messages.COMMAND_PARAMETERS_MISSING);
 		else
@@ -47,6 +50,7 @@ public class ResetCommand extends Command {
 		if (level == null)
 			model.reset();
 		else
-		model.reset(level, seed);
+			model.reset(level, seed);
+		view.showGame();
 	}
 }

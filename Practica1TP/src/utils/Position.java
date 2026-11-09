@@ -1,4 +1,4 @@
-package pvz.utils;
+package utils;
 
 /**
  * Basic 2D board position class with useful methods for other classes.

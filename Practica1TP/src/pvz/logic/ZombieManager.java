@@ -6,7 +6,7 @@ import java.util.Random;
 import pvz.control.Level;
 import pvz.control.ZombieFactory;
 import pvz.logic.gameobjects.Zombie;
-import pvz.utils.Position;
+import utils.Position;
 
 /**
  * Manages the full lifecycle of zombies for a game session.

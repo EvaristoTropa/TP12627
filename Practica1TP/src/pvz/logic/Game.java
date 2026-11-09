@@ -6,10 +6,10 @@ import java.util.Random;
 import pvz.control.Level;
 import pvz.control.PlantFactory;
 import pvz.control.ZombieFactory;
-import pvz.utils.Position;
 import pvz.logic.gameobjects.GameObject;
 import pvz.logic.gameobjects.Plant;
 import pvz.logic.gameobjects.Zombie;
+import utils.Position;
 
 /**
  * The singular most important component of the game.
@@ -61,7 +61,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	public boolean checkPlant(String plantName) {
 		int i = 0;
 		List<Plant> plants = PlantFactory.getAvailablePlants();
-		while (i < plants.size() && plants.get(i).matchPlant(plantName))
+		while (i < plants.size() && !plants.get(i).matchPlant(plantName))
 			i++;
 		return i < plants.size();
 	}
@@ -69,7 +69,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	public boolean checkZombie(String zombieName) {
 		int i = 0;
 		List<Zombie> zombies = ZombieFactory.getAvailableZombies();
-		while (i < zombies.size() && zombies.get(i).matchZombie(zombieName))
+		while (i < zombies.size() && !zombies.get(i).matchZombie(zombieName))
 			i++;
 		return i < zombies.size();
 	}
@@ -158,12 +158,14 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	 */
 	
 	public void reset(Level level, long seed) {
-		rand = new Random(seed);
-		zombieManager = new ZombieManager(this, level, rand);
-		gameObjects = new GameObjectContainer();
-		cycles = 0;
-		coins = INITIAL_COINS;
-		playerQuits = false;
+		this.level = level;
+		this.seed = seed;
+		this.rand = new Random(seed);
+		this.zombieManager = new ZombieManager(this, level, rand);
+		this.gameObjects = new GameObjectContainer();
+		this.cycles = 0;
+		this.coins = INITIAL_COINS;
+		this.playerQuits = false;
 	}
 	
 	public void reset() {
@@ -183,7 +185,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	public void addPlant(String plantName, Position position) {
 		if (isEmpty(position) && isInsideBoard(position)) {
 		Plant plant = PlantFactory.spawnPlant(plantName, this, position);
-		if (coins >= plant.getCost()) {
+		if (plant != null && coins >= plant.getCost()) {
 			addGameObject(plant);
 			coins -= plant.getCost();
 			}

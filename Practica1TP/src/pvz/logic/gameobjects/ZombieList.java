@@ -1,6 +1,6 @@
 package pvz.logic.gameobjects;
 
-import pvz.utils.Position;
+import utils.Position;
 
 /**
  * Contains a list of all zombies ({@link BasicZombie}) in the game and methods to handle it.

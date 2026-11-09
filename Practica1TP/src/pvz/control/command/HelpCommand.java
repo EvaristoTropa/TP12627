@@ -20,7 +20,7 @@ public class HelpCommand extends Command {
 	
 	@Override
 	public boolean matchCommand(String command) {
-		return command == name || command == shortcut;
+		return command.equalsIgnoreCase(name) || command.equalsIgnoreCase(shortcut);
 	}
 	
 	@Override
@@ -37,6 +37,6 @@ public class HelpCommand extends Command {
 	public void execute(GameModel model, GameView view) {
 		view.showMessage(Messages.HELP_AVAILABLE_COMMANDS);
 		for (Command i : AVAILABLE_COMMANDS)
-			view.showMessage(i.getHelp());
+			view.showMessage(i.getDetails() + ": " + i.getHelp());
 	}
 }

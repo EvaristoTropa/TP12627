@@ -20,7 +20,7 @@ public class UpdateCommand extends Command {
 	
 	@Override
 	public boolean matchCommand(String command) {
-		return command == name || command == shortcut;
+		return command.equalsIgnoreCase(name) || command.equalsIgnoreCase(shortcut) || command == "";
 	}
 	
 	@Override
@@ -34,5 +34,6 @@ public class UpdateCommand extends Command {
 	@Override
 	public void execute(GameModel model, GameView view) {
 		model.update();
+		view.showGame();
 	}
 }
