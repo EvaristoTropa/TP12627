@@ -1,6 +1,5 @@
 package test;
 
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pvz.logic.Game;
 import pvz.view.Messages;
@@ -48,7 +47,7 @@ class AddPlantCommandTest extends CommandTestBase {
     void cherryBomb_costs50_andShowsAsLowercaseC() {
         run("add", "cherry-bomb", "2", "1");
         assertEquals(0, game.getCoins());
-        assertTrue(cell(1, 2).contains("C["), "after the cycle the bomb is one cycle from exploding");
+        assertTrue(cell(1, 2).contains("c["), "after the cycle the bomb is two cycles from exploding");
     }
 
     @Test

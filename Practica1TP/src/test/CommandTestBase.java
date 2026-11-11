@@ -5,7 +5,6 @@ import pvz.control.Level;
 import pvz.control.command.Command;
 import pvz.logic.Game;
 import pvz.logic.gameobjects.Sun;
-import test.RecordingView;
 import utils.Position;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;

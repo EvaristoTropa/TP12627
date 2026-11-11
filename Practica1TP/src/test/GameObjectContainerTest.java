@@ -1,7 +1,6 @@
 package test;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import pvz.logic.GameObjectContainer;
@@ -11,7 +10,6 @@ import pvz.logic.gameobjects.Sun;
 import pvz.logic.gameobjects.Sunflower;
 import pvz.logic.gameobjects.WallNut;
 import pvz.logic.gameobjects.ExplosiveZombie;
-import test.FakeGameWorld;
 import utils.Position;
 
 import static org.junit.jupiter.api.Assertions.*;

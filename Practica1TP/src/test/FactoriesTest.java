@@ -7,7 +7,6 @@ import pvz.logic.gameobjects.Plant;
 import pvz.logic.gameobjects.Zombie;
 import pvz.logic.gameobjects.factories.PlantFactory;
 import pvz.logic.gameobjects.factories.ZombieFactory;
-import test.FakeGameWorld;
 import utils.Position;
 
 import java.util.List;

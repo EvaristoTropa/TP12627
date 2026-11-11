@@ -2,12 +2,10 @@ package test;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pvz.control.Level;
 import pvz.logic.Game;
 import pvz.logic.GameModel;
-import pvz.logic.GameStatus;
 import pvz.logic.GameWorld;
 import pvz.logic.gameobjects.SportyZombie;
 import pvz.logic.gameobjects.Sun;
@@ -15,7 +13,6 @@ import pvz.logic.gameobjects.Sunflower;
 import pvz.view.GamePrinter;
 import utils.Position;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -74,11 +71,13 @@ class GamePrinterTest {
     private String cell(String output, int row, int col) {
         return rows(output).get(row)[1 + col];
     }
-
+    
+    /*
     private String outsideCell(String output, int row) {
         String[] parts = rows(output).get(row);
         return parts[parts.length - 1].trim();
     }
+    */
 
     // ------------------------------------------------------------------ //
     //  Header                                                              //

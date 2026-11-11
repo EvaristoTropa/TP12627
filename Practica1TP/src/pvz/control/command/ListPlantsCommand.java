@@ -1,7 +1,7 @@
 package pvz.control.command;
 
-import pvz.control.PlantFactory;
 import pvz.logic.gameobjects.Plant;
+import pvz.logic.gameobjects.factories.PlantFactory;
 import pvz.logic.GameModel;
 import pvz.view.GameView;
 import pvz.view.Messages;

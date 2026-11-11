@@ -10,8 +10,8 @@ import pvz.logic.GameWorld;
  * @author Rodrigo Ferrer López
  */
 
-public class BasicZombie extends Zombie {
-	public BasicZombie(GameWorld game, Position position) {
+public class CommonZombie extends Zombie {
+	public CommonZombie(GameWorld game, Position position) {
 		super(game, position, 1, 2, 5);
 		this.symbol = Messages.ZOMBIE_SYMBOL;
 		this.name = Messages.ZOMBIE_NAME;
@@ -20,8 +20,8 @@ public class BasicZombie extends Zombie {
 		this.nas = Messages.ZOMBIE_NAME_AND_SHORTCUT;
 	}
 	
-	public BasicZombie create(GameWorld game, Position position) {
-		return new BasicZombie(game, position);
+	public CommonZombie create(GameWorld game, Position position) {
+		return new CommonZombie(game, position);
 	}
 	
 	public String getIcon() {

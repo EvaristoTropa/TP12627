@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pvz.logic.GameWorld;
 import pvz.logic.gameobjects.Plant;
-import test.FakeGameWorld;
 import utils.Position;
 
 import static org.junit.jupiter.api.Assertions.*;

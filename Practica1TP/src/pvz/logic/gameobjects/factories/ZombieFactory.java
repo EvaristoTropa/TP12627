@@ -1,10 +1,13 @@
-package pvz.control;
+package pvz.logic.gameobjects.factories;
 
 import java.util.List;
 import java.util.Arrays;
 import java.util.Collections;
 
-import pvz.logic.gameobjects.BasicZombie;
+import pvz.logic.gameobjects.CommonZombie;
+import pvz.logic.gameobjects.BucketHeadZombie;
+import pvz.logic.gameobjects.ExplosiveZombie;
+import pvz.logic.gameobjects.SportyZombie;
 import pvz.logic.gameobjects.Zombie;
 import utils.Position;
 import pvz.logic.GameWorld;
@@ -19,7 +22,10 @@ import pvz.logic.GameWorld;
 
 public class ZombieFactory {
 	private static final List<Zombie> AVAILABLE_ZOMBIES = Arrays.asList(
-		new BasicZombie(null, null)
+		new CommonZombie(null, null),
+		new BucketHeadZombie(null, null),
+		new SportyZombie(null, null),
+		new ExplosiveZombie(null, null)
 	);
 	
 	public static Zombie spawnZombie(String zombieName, GameWorld game, Position position) {
@@ -27,7 +33,7 @@ public class ZombieFactory {
 		while (i < AVAILABLE_ZOMBIES.size() && !AVAILABLE_ZOMBIES.get(i).matchZombie(zombieName))
 			i++;
 		if (i < AVAILABLE_ZOMBIES.size() && game.isEmpty(position) && game.isInsideBoard(position))
-			return AVAILABLE_ZOMBIES.get(i).create(game, position);
+			return AVAILABLE_ZOMBIES.get(i).copy(position, game);
 		else
 		return null;
 	}

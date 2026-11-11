@@ -36,7 +36,7 @@ public class GamePrinter implements GameView {
 
 	private static final String VERTICAL_DELIMITER = "|";
 
-	private static final String NEW_LINE = System.lineSeparator();
+	//private static final String NEW_LINE = System.lineSeparator();
 
 	private static final int MARGIN_SIZE = 2;
 	
@@ -130,10 +130,12 @@ public class GamePrinter implements GameView {
 		for (int row = 0; row < GameWorld.NUM_ROWS; row++) {
 			str.append(MARGIN).append(VERTICAL_DELIMITER);
 			for (int col = 0; col < GameWorld.NUM_COLS; col++) {
-				String objetsInPosition = filterRepeatedSuns(game.positionToString(new Position(row, col)));
-				str.append(StringUtils.centre(objetsInPosition, CELL_SIZE)).append(VERTICAL_DELIMITER);
+				String objectsInPosition = filterRepeatedSuns(game.positionToString(new Position(row, col)));
+				str.append(StringUtils.centre(objectsInPosition, CELL_SIZE)).append(VERTICAL_DELIMITER);
 			}
-			str.append(INDENTED_ROW_BORDER);
+			str.append(VERTICAL_DELIMITER);
+			String objectsInPosition = filterRepeatedSuns(game.positionToString(new Position(row, GameWorld.NUM_COLS)));
+			str.append(StringUtils.centre(objectsInPosition, CELL_SIZE)).append(INDENTED_ROW_BORDER);
 		}
 
 		System.out.println(str);

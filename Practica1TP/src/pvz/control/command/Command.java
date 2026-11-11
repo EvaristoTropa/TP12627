@@ -16,12 +16,16 @@ import pvz.view.GameView;
 
 public abstract class Command {
 	protected static final List<Command> AVAILABLE_COMMANDS = Arrays.asList(
-			new AddPlantCommand(),
+			new AddPlantCommand(null, null),
+			new AddZombieCommand(null, null),
+			new AddPlantCheatCommand(null, null),
+			new CatchCommand(null),
 			new ListPlantsCommand(),
-			new ResetCommand(),
+			new ListZombiesCommand(),
+			new ResetCommand(null, 0L),
 			new HelpCommand(),
-			new UpdateCommand(),
-			new ExitCommand()
+			new ExitCommand(),
+			new UpdateCommand()
 	);
 	
 	protected String name = "";
@@ -41,12 +45,10 @@ public abstract class Command {
 		int i = 0;
 		while (i < AVAILABLE_COMMANDS.size() && !AVAILABLE_COMMANDS.get(i).matchCommand(commandWords[0]))
 			i++;
-		if (i < AVAILABLE_COMMANDS.size()) {
-			Command command = AVAILABLE_COMMANDS.get(i).create(commandWords);
-			return command;
-		}
+		if (i < AVAILABLE_COMMANDS.size())
+			return AVAILABLE_COMMANDS.get(i).create(commandWords);
 		else
-			return null;
+			return new UnknownCommand();
 	}
 	
 	/**

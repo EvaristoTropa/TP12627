@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import pvz.logic.actions.ExplosionAction;
 import pvz.logic.actions.GameAction;
-import test.FakeGameWorld;
 import test.FakeGameWorld.Attack;
 import utils.Position;
 
@@ -28,7 +27,7 @@ class ExplosionActionTest {
 
     @Test
     void plantExplosion_attacksZombiesInEachPosition() {
-        GameAction action = new ExplosionAction(10, true, new Position(0, 1), new Position(1, 2));
+        GameAction action = new ExplosionAction(10, true, new Position[] { new Position(0, 1), new Position(1, 2) });
 
         action.execute(world);
 
@@ -39,7 +38,7 @@ class ExplosionActionTest {
 
     @Test
     void zombieExplosion_attacksPlantsInEachPosition() {
-        GameAction action = new ExplosionAction(3, false, new Position(2, 2), new Position(3, 3));
+        GameAction action = new ExplosionAction(3, false, new Position[] { new Position(2, 2), new Position(3, 3) });
 
         action.execute(world);
 
@@ -50,14 +49,14 @@ class ExplosionActionTest {
 
     @Test
     void withoutPositions_nothingHappens() {
-        new ExplosionAction(10, true).execute(world);
+        new ExplosionAction(10, true, new Position[0]).execute(world);
         assertTrue(world.plantAttacks.isEmpty());
         assertTrue(world.zombieAttacks.isEmpty());
     }
 
     @Test
     void executingTwice_attacksTwice() {
-        GameAction action = new ExplosionAction(3, false, new Position(0, 0));
+        GameAction action = new ExplosionAction(3, false, new Position[] { new Position(0, 0) });
         action.execute(world);
         action.execute(world);
         assertEquals(2, world.zombieAttacks.size());
@@ -66,7 +65,7 @@ class ExplosionActionTest {
     @Test
     void explosion_canTriggerFurtherActions_throughTheWorld() {
         // an action may push new actions into the world; the game runs them afterwards
-        GameAction chained = w -> w.pushAction(new ExplosionAction(1, true, new Position(0, 0)));
+        GameAction chained = w -> w.pushAction(new ExplosionAction(1, true, new Position[] { new Position(0, 0) }));
 
         chained.execute(world);
 

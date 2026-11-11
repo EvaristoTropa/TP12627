@@ -15,7 +15,9 @@ public class ResetCommand extends Command {
 	private Level level;
 	private long seed;
 	
-	public ResetCommand() {
+	public ResetCommand(Level level, long seed) {
+		this.level = level;
+		this.seed = seed;
 		this.name = Messages.COMMAND_RESET_NAME;
 		this.shortcut = Messages.COMMAND_RESET_SHORTCUT;
 		this.details = Messages.COMMAND_RESET_DETAILS;
@@ -30,15 +32,12 @@ public class ResetCommand extends Command {
 	@Override
 	public Command create(String[] commandWords) {
 		if (commandWords.length == 3) {
-			level = Level.valueOfIgnoreCase(commandWords[1]);
-			seed = Integer.toUnsignedLong(Integer.parseInt(commandWords[2]));
-			return this;
+			Level newLevel = Level.valueOfIgnoreCase(commandWords[1]);
+			long newSeed = Integer.toUnsignedLong(Integer.parseInt(commandWords[2]));
+			return new ResetCommand(newLevel, newSeed);
 		}
-		else if (commandWords.length == 1) {
-			level = null;
-			seed = 0L;
-			return this;
-		}
+		else if (commandWords.length == 1)
+			return new ResetCommand(null, 0L);
 		else if (commandWords.length < 3)
 			return new ErrorCommand(Messages.COMMAND_PARAMETERS_MISSING);
 		else

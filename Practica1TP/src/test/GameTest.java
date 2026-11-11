@@ -1,7 +1,6 @@
 package test;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pvz.control.Level;
 import pvz.logic.Game;
@@ -354,8 +353,12 @@ class GameTest {
         game.addGameObject("s", at(0, 0));
         updateTimes(4);
         assertEquals(1, game.getGeneratedCoins());
-        updateTimes(3);
+        updateTimes(2);
+        // a new sun has been generated because the game has run for 5 cycles
         assertEquals(2, game.getGeneratedCoins());
+        // The sunflower has generated another suncoin
+        updateTimes(1);
+        assertEquals(3, game.getGeneratedCoins());
     }
 
     // ------------------------------------------------------------------ //
@@ -599,7 +602,8 @@ class GameTest {
     //  Game actions stack                                                  //
     // ------------------------------------------------------------------ //
 
-    @Test
+    @SuppressWarnings("unused")
+	@Test
     void pushedAction_isExecutedDuringTheNextUpdate_notBefore() {
         int[] executed = {0};
         game.pushAction(world -> executed[0]++);
@@ -611,7 +615,8 @@ class GameTest {
         assertEquals(1, executed[0], "an action runs only once");
     }
 
-    @Test
+    @SuppressWarnings("unused")
+	@Test
     void pushedActions_runLastInFirstOut() {
         List<String> order = new ArrayList<>();
         game.pushAction(world -> order.add("first"));
@@ -622,7 +627,8 @@ class GameTest {
         assertEquals(List.of("second", "first"), order);
     }
 
-    @Test
+    @SuppressWarnings("unused")
+	@Test
     void actionsPushedByAnAction_runInTheSameUpdate() {
         List<String> order = new ArrayList<>();
         game.pushAction(world -> {
@@ -718,7 +724,8 @@ class GameTest {
         assertTrue(game.catchObject(at(0, 0)));
     }
 
-    @Test
+    @SuppressWarnings("unused")
+	@Test
     void reset_discardsPendingActions() {
         int[] executed = {0};
         game.pushAction(world -> executed[0]++);
