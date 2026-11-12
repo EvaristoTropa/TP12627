@@ -32,7 +32,7 @@ public class ZombieFactory {
 		int i = 0;
 		while (i < AVAILABLE_ZOMBIES.size() && !AVAILABLE_ZOMBIES.get(i).matchZombie(zombieName))
 			i++;
-		if (i < AVAILABLE_ZOMBIES.size() && game.isEmpty(position) && game.isInsideBoard(position))
+		if (i < AVAILABLE_ZOMBIES.size() && game.isEmpty(position) && game.isInBoardLimit(position))
 			return AVAILABLE_ZOMBIES.get(i).copy(position, game);
 		else
 		return null;

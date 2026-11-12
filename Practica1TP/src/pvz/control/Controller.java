@@ -4,8 +4,6 @@ import pvz.control.command.Command;
 import pvz.logic.Game;
 import pvz.view.GamePrinter;
 import pvz.view.GameView;
-import pvz.view.Messages;
-import utils.Position;
 
 /**
  * Input/output coordinator of the game (the C in MVC).
@@ -87,13 +85,12 @@ public class Controller {
 	 * Runs the game logic.
 	 */
 	public void run() {
+		view.showGame();
 		while(!game.hasGameFinished() && !game.playerQuits()) {
 			String[] words = view.getPrompt();
 			Command command = Command.parse(words);
-			if (command != null)
-				command.execute(game, view);
-			else
-				view.showError(Messages.UNKNOWN_COMMAND);
-		}	
+			command.execute(game, view);
+		}
+		view.showEndMessage();
 	}
 }

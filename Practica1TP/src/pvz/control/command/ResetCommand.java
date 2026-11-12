@@ -38,8 +38,6 @@ public class ResetCommand extends Command {
 		}
 		else if (commandWords.length == 1)
 			return new ResetCommand(null, 0L);
-		else if (commandWords.length < 3)
-			return new ErrorCommand(Messages.COMMAND_PARAMETERS_MISSING);
 		else
 			return new ErrorCommand(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
 	}

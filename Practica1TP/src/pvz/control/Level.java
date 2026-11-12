@@ -10,6 +10,7 @@ package pvz.control;
  * 
  * @author Rodrigo Domínguez Carramal
  */
+
 public enum Level {
 	
 	EASY(3, 0.1),

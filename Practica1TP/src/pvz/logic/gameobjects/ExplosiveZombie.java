@@ -53,23 +53,21 @@ public class ExplosiveZombie extends Zombie {
 			game.zombieAttack(targetPos, damage);
 			counter++;
 		}
-		else {
-			Position[] positions = {
-					position.up(),
-					position.upRight(),
-					position.right(),
-					position.downRight(),
-					position.down(),
-					position.downLeft(),
-					position.left(),
-					position.upLeft()
-			};
-			ExplosionAction explosion = new ExplosionAction(3, false, positions);
-			game.pushAction(explosion);
-		}
 	}
 	
 	public void onExit() {
+		Position[] positions = {
+				position.up(),
+				position.upRight(),
+				position.right(),
+				position.downRight(),
+				position.down(),
+				position.downLeft(),
+				position.left(),
+				position.upLeft()
+		};
+		ExplosionAction explosion = new ExplosionAction(3, false, positions);
+		game.pushAction(explosion);
 		game.zombieKilled();
 	}
 	

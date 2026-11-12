@@ -36,16 +36,20 @@ public class CatchCommand extends Command {
 		else if (commandWords.length < 3)
 			return new ErrorCommand(Messages.COMMAND_PARAMETERS_MISSING);
 		else
-			return new ErrorCommand(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
+			return new ErrorCommand(Messages.INVALID_COMMAND);
 	}
 	
 	@Override
 	public void execute(GameModel model, GameView view) {
-		if (!model.catchUsed()) {
+		if (!model.isInsideBoard(position))
+			view.showError(Messages.INVALID_POSITION);
+		else if (!model.catchUsed()) {
 		if (!model.catchObject(position))
-			view.showError(Messages.NO_CATCHABLE_IN_POSITION);
+			view.showError(Messages.NO_CATCHABLE_IN_POSITION.formatted(position.column(), position.row()));
 		else
 			view.showGame();
 		}
+		else
+			view.showError("Cannot catch suns more than once per cycle");
 	}
 }

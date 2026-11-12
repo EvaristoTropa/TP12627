@@ -76,16 +76,12 @@ public class Position {
         return row + " " + col;
     }
     
-    /**
-     * Creates a new position to the left of a previous one.
-     * 
-     * @param other Position to modify
-     * 
-     * @return a new position to the left (the other stays intact).
-     */
+    public Position up() {
+    	return new Position(row - 1, col);
+    }
     
-    public static Position left(Position other) {
-    	return new Position(other.row(), other.column() - 1);
+    public Position upRight() {
+    	return new Position(row - 1, col + 1);
     }
     
     /**
@@ -96,8 +92,36 @@ public class Position {
      * @return a new position to the right (the other stays intact).
      */
     
-    public static Position right(Position other) {
-    	return new Position(other.row(), other.column() + 1);
+    public Position right() {
+    	return new Position(row, col + 1);
+    }
+    
+    public Position downRight() {
+    	return new Position(row + 1, col + 1);
+    }
+    
+    public Position down() {
+    	return new Position(row + 1, col);
+    }
+    
+    public Position downLeft() {
+    	return new Position(row + 1, col - 1);
+    }
+    
+    /**
+     * Creates a new position to the left of a previous one.
+     * 
+     * @param other Position to modify
+     * 
+     * @return a new position to the left (the other stays intact).
+     */
+    
+    public Position left() {
+    	return new Position(row, col - 1);
+    }
+    
+    public Position upLeft() {
+    	return new Position(row - 1, col - 1);
     }
     
     /**

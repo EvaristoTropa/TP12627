@@ -22,8 +22,8 @@ import pvz.logic.GameWorld;
 
 public class PlantFactory {
 	private static final List<Plant> AVAILABLE_PLANTS = Arrays.asList(
-		new Peashooter(null, null),
 		new Sunflower(null, null),
+		new Peashooter(null, null),
 		new WallNut(null, null),
 		new CherryBomb(null, null)
 	);

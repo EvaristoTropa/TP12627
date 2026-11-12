@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Random;
 
 import pvz.control.Level;
-import pvz.control.ZombieFactory;
 import pvz.logic.gameobjects.Zombie;
+import pvz.logic.gameobjects.factories.ZombieFactory;
 import utils.Position;
 
 /**
@@ -75,11 +75,10 @@ public class ZombieManager {
 	public boolean addZombie(int row) {
         Position pos = Game.newZombiePosition(row);
 		boolean canAdd = getRemainingZombies() > 0 && shouldAddZombie() && game.isEmpty(pos);
-
 		if(canAdd) {
 			List<Zombie> zombies = ZombieFactory.getAvailableZombies();
 			int i = rand.nextInt(zombies.size());
-            Zombie zombie = zombies.get(i).create(game, pos);
+            Zombie zombie = zombies.get(i).copy(pos, game);
             game.addGameObject(zombie);
             zombiesToSpawn--;
 		}
@@ -96,17 +95,7 @@ public class ZombieManager {
         return zombiesToSpawn;
     }
     
-    /**
-	 * Checks if any zombies got past the lawn (the board).
-	 * 
-	 * @return <code>true</code> if a zombie has crossed the left boundary of the board.
-	 */
-    
-    public boolean doZombiesReachedTheHouse() {
-        return game.anyInColumn(-1);
-    }
-    
-    public void zombieDies() {
+    public void zombieKilled() {
     	zombiesToKill--;
     }
     

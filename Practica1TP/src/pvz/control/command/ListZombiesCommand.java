@@ -37,7 +37,9 @@ public class ListZombiesCommand extends Command {
 	
 	@Override
 	public void execute(GameModel model, GameView view) {
+		StringBuilder list = new StringBuilder();
 		for (Zombie i : ZombieFactory.getAvailableZombies())
-			view.showMessage(i.getDescription());
+			list.append(i.getDescription() + '\n');
+		view.showMessage(list.toString());
 	}
 }

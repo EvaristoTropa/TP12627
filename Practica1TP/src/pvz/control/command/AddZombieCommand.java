@@ -36,12 +36,12 @@ public class AddZombieCommand extends Command {
 	@Override
 	public Command create(String[] commandWords) {
 		if (commandWords.length == 4) {
+			String newZombieName = commandWords[1];
 			int i = 0;
 			List<Zombie> zombies = ZombieFactory.getAvailableZombies();
-			while (i < zombies.size() && !zombies.get(i).matchZombie(zombieName))
+			while (i < zombies.size() && !zombies.get(i).matchZombie(newZombieName))
 				i++;
 			if (i < zombies.size()) {
-				String newZombieName = commandWords[1];
 				Position newPosition = new Position(Integer.parseInt(commandWords[3]), Integer.parseInt(commandWords[2]));
 				return new AddZombieCommand(newZombieName, newPosition);
 			}
@@ -51,12 +51,12 @@ public class AddZombieCommand extends Command {
 		else if (commandWords.length < 4)
 			return new ErrorCommand(Messages.COMMAND_PARAMETERS_MISSING);
 		else
-			return new ErrorCommand(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
+			return new ErrorCommand(Messages.INVALID_COMMAND);
 	}
 	
 	@Override
 	public void execute(GameModel model, GameView view) {
-		if (!model.isValidPosition(position) || !model.isInBoardLimit(position))
+		if (!model.isValidPosition(position))
 			view.showError(Messages.INVALID_POSITION);
 		else {
 			model.addZombie(zombieName, position);

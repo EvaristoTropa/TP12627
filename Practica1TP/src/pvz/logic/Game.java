@@ -2,13 +2,16 @@ package pvz.logic;
 
 import java.util.List;
 import java.util.Random;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 import pvz.control.Level;
-import pvz.control.PlantFactory;
-import pvz.control.ZombieFactory;
+import pvz.logic.actions.GameAction;
 import pvz.logic.gameobjects.GameObject;
 import pvz.logic.gameobjects.Plant;
 import pvz.logic.gameobjects.Zombie;
+import pvz.logic.gameobjects.factories.PlantFactory;
+import pvz.logic.gameobjects.factories.ZombieFactory;
 import utils.Position;
 
 /**
@@ -21,15 +24,22 @@ import utils.Position;
 
 public class Game implements GameStatus, GameWorld, GameModel {
 	public static final int INITIAL_COINS = 50;
+	private static final int SUN_PERIOD = 5;
 	
 	private long seed;
 	private Level level;
 	private Random rand;
-	private GameObjectContainer gameObjects;
+	private GameObjectContainer container;
+	private Deque<GameAction> actions;
 	private ZombieManager zombieManager;
+	private SunsManager sunManager;
 	private int cycles;
 	private int coins;
+	private int generatedSuns;
+	private int caughtSuns;
+	private int sun_counter;
 	private boolean playerQuits;
+	private boolean catchUsed;
 	
 	public Game (long seed, Level level) {
 		reset(level, seed);
@@ -44,10 +54,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
      */
 	
 	public String positionToString(Position position) {
-		if (!gameObjects.isEmpty(position))
-			return gameObjects.iconInPosition(position);
-		else
-			return "";
+		return container.positionToString(position);
 	}
 	
 	/**
@@ -104,6 +111,14 @@ public class Game implements GameStatus, GameWorld, GameModel {
 		return zombieManager.getRemainingZombies();
 	}
 	
+	public int getGeneratedCoins() {
+		return generatedSuns;
+	}
+	
+	public int getCaughtCoins() {
+		return caughtSuns;
+	}
+	
 	/**
 	 * Checks if the game is considered finished.
 	 * 
@@ -111,7 +126,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	 */
 	
 	public boolean hasGameFinished() {
-		return playerWins() || zombieManager.doZombiesReachedTheHouse() || playerQuits();
+		return playerWins() || doZombiesReachedTheHouse() || playerQuits();
 	}
 	
 	/**
@@ -122,6 +137,10 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	
 	public boolean playerWins() {
 		return zombieManager.allZombiesWereKilled();
+	}
+	
+	public boolean doZombiesReachedTheHouse() {
+		return anyInColumn(-1);
 	}
 	
 	/**
@@ -147,10 +166,37 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	 */
 	
 	public void update() {
-		cycles++;
+		executePendingActions();
 		zombieManager.addZombie();
-		gameObjects.update();
-		gameObjects.removeDead();
+		if (sun_counter >= SUN_PERIOD) {
+			sunManager.addSun();
+			sun_counter = 0;
+			generatedSuns++;
+		}
+		container.update();
+		boolean deadRemoved = true;
+		while (deadRemoved || arePendingActionsLeft()) {
+		deadRemoved = container.removeDead();
+		executePendingActions();
+		}
+		catchUsed = false;
+		cycles++;
+		sun_counter++;
+	}
+	
+	public void pushAction(GameAction gameAction) {
+		actions.addLast(gameAction);
+	}
+	
+	private void executePendingActions() {
+		while (!actions.isEmpty()) {
+			GameAction action = actions.removeFirst();
+			action.execute(this);
+		}
+	}
+	
+	private boolean arePendingActionsLeft() {
+		return !actions.isEmpty();
 	}
 	
 	/**
@@ -162,18 +208,48 @@ public class Game implements GameStatus, GameWorld, GameModel {
 		this.seed = seed;
 		this.rand = new Random(seed);
 		this.zombieManager = new ZombieManager(this, level, rand);
-		this.gameObjects = new GameObjectContainer();
+		this.sunManager = new SunsManager(this);
+		this.container = new GameObjectContainer();
+		this.actions = new ArrayDeque<>();
 		this.cycles = 0;
 		this.coins = INITIAL_COINS;
+		this.generatedSuns = 0;
+		this.caughtSuns = 0;
+		this.sun_counter = 0;
 		this.playerQuits = false;
+		this.catchUsed = false;
 	}
 	
 	public void reset() {
 		reset(this.level, this.seed);
 	}
 	
-	public void addGameObject(GameObject object) {
-		gameObjects.add(object);
+	public boolean addGameObject(GameObject object) {
+		return container.add(object);
+	}
+	
+	public void generateSun() {
+		sunManager.addSun();
+		generatedSuns++;
+	}
+	
+	public boolean catchObject(Position position) {
+		if (!catchUsed) {
+		int sunsCaught = container.catchObject(position);
+		if (sunsCaught > 0) {
+		caughtSuns += sunsCaught;
+		catchUsed = true;
+		return true;
+		}
+		else
+			return false;
+		}
+		else
+			return false;
+	}
+	
+	public boolean catchUsed() {
+		return catchUsed;
 	}
 	
 	/**
@@ -182,21 +258,44 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	 * @param plantType Plant to spawn, position Position of the new plant
 	 */
 	
-	public void addPlant(String plantName, Position position) {
+	public boolean addGameObject(String plantName, Position position) {
 		if (isEmpty(position) && isInsideBoard(position)) {
 		Plant plant = PlantFactory.spawnPlant(plantName, this, position);
 		if (plant != null && coins >= plant.getCost()) {
-			addGameObject(plant);
 			coins -= plant.getCost();
+			return addGameObject(plant);
 			}
+		else 
+			return addZombie(plantName, position);
 		}
+		else if (isInBoardLimit(position))
+			return addZombie(plantName, position);
+		else
+			return false;
 	}
 	
-	public void addZombie(String zombieName, Position position) {
-		if (isEmpty(position) && isInsideExpandedBoard(position)) {
-		Zombie zombie = ZombieFactory.spawnZombie(zombieName, this, position);
-		addGameObject(zombie);
+	public boolean addGameObjectForFree(String plantName, Position position) {
+		if (isEmpty(position) && isInsideBoard(position)) {
+		Plant plant = PlantFactory.spawnPlant(plantName, this, position);
+		if (plant != null)
+			return addGameObject(plant);
+		else
+			return false;
 		}
+		else
+			return false;
+	}
+	
+	public boolean addZombie(String zombieName, Position position) {
+		if (isEmpty(position) && isInBoardLimit(position)) {
+		Zombie zombie = ZombieFactory.spawnZombie(zombieName, this, position);
+		if (zombie != null)
+		return addGameObject(zombie);
+		else
+			return false;
+		}
+		else
+			return false;
 	}
 	
 	/**
@@ -215,8 +314,8 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	 * @param p Position to check, damage Damage to deal
 	 */
 	
-	public void attackZombie(Position p, int damage) {
-		gameObjects.attackZombie(p, damage);
+	public boolean plantAttack(Position p, int damage) {
+		return container.attackZombie(p, damage);
 	}
 	
 	/**
@@ -225,8 +324,8 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	 * @param p Position to check, damage Damage to deal
 	 */
 	
-	public void attackPlant(Position p, int damage) {
-		gameObjects.attackPlant(p, damage);
+	public boolean zombieAttack(Position p, int damage) {
+		return container.attackPlant(p, damage);
 	}
 	
 	/**
@@ -238,19 +337,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	 */
 	
 	public boolean isEmpty(Position p) {
-		return gameObjects.isEmpty(p);
-	}
-	
-	/**
-	 * Checks if a given position contains a zombie in it.
-	 * 
-	 * @param p Position to check
-	 * 
-	 * @return <code>true</code> if a zombie was found there.
-	 */
-	
-	public boolean containsZombie(Position p) {
-		return gameObjects.containsZombie(p);
+		return container.isPositionEmpty(p);
 	}
 	
 	/**
@@ -267,6 +354,10 @@ public class Game implements GameStatus, GameWorld, GameModel {
 		return new Position(row, NUM_COLS);
 	}
 	
+	public Position randomPosition() {
+		return new Position(rand.nextInt(NUM_ROWS), rand.nextInt(NUM_COLS));
+	}
+	
 	/**
 	 * Checks if a position is considered inside the board by the game.
 	 * 
@@ -280,16 +371,20 @@ public class Game implements GameStatus, GameWorld, GameModel {
 		&& p.column() >= 0 && p.column() < NUM_COLS;
 	}
 	
-	public boolean isInsideExpandedBoard(Position p) {
+	public boolean isInBoardLimit(Position p) {
 		return p.row() >= 0 && p.row() < NUM_ROWS
 		&& p.column() >= -1 && p.column() <= NUM_COLS;
 	}
 	
-	public void zombieDies() {
-		zombieManager.zombieDies();
+	public boolean isValidPosition(Position position) {
+		return isEmpty(position) && isInsideBoard(position);
+	}
+	
+	public void zombieKilled() {
+		zombieManager.zombieKilled();
 	}
 	
 	public boolean anyInColumn(int column) {
-		return gameObjects.anyInColumn(column);
+		return container.anyInColumn(column);
 	}
 }

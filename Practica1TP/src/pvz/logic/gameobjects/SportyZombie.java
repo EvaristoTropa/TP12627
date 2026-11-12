@@ -1,4 +1,4 @@
-package pvz.control.command;
+package pvz.logic.gameobjects;
 
 import pvz.view.Messages;
 import utils.Position;

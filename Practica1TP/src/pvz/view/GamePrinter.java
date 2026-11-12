@@ -130,11 +130,11 @@ public class GamePrinter implements GameView {
 		for (int row = 0; row < GameWorld.NUM_ROWS; row++) {
 			str.append(MARGIN).append(VERTICAL_DELIMITER);
 			for (int col = 0; col < GameWorld.NUM_COLS; col++) {
-				String objectsInPosition = filterRepeatedSuns(game.positionToString(new Position(row, col)));
+				String objectsInPosition = filterRepeatedSuns(game.positionToString(new Position(row, col))).trim();
 				str.append(StringUtils.centre(objectsInPosition, CELL_SIZE)).append(VERTICAL_DELIMITER);
 			}
 			str.append(VERTICAL_DELIMITER);
-			String objectsInPosition = filterRepeatedSuns(game.positionToString(new Position(row, GameWorld.NUM_COLS)));
+			String objectsInPosition = filterRepeatedSuns(game.positionToString(new Position(row, GameWorld.NUM_COLS))).trim();
 			str.append(StringUtils.centre(objectsInPosition, CELL_SIZE)).append(INDENTED_ROW_BORDER);
 		}
 
