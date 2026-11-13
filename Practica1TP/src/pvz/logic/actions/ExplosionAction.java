@@ -3,6 +3,12 @@ package pvz.logic.actions;
 import pvz.logic.GameWorld;
 import utils.Position;
 
+/**
+ * Action that deals plant or zombie damage onto a series of positions at once.
+ * 
+ * @author Rodrigo Ferrer López
+ */
+
 public class ExplosionAction implements GameAction {
 	private int damage;
 	private boolean isPlant;

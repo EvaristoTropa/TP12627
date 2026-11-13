@@ -12,23 +12,33 @@ package pvz.control;
  */
 
 public enum Level {
-	
 	EASY(3, 0.1),
 	HARD(5, 0.2),
 	INSANE(10, 0.3);
 	
 	private final int numberOfZombies;
 	private final double zombieFrequency;
-	
 
 	private Level(int numberOfZombies, double zombieFrequency) {
 		this.numberOfZombies = numberOfZombies;
 		this.zombieFrequency = zombieFrequency;
 	}
+	
+	/**
+	 * Fetches a level's corresponding number of zombies.
+	 * 
+	 * @return how many zombies will spawn in the level.
+	 */
 
 	public int getNumberOfZombies() {
 		return numberOfZombies;
 	}
+	
+	/**
+	 * Fetches a level's corresponding zombie frequency.
+	 * 
+	 * @return how often will zombies spawn in the level.
+	 */
 	
 	public double getZombieFrequency() {
 		return zombieFrequency;

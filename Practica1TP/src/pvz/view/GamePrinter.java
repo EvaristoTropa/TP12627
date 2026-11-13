@@ -27,6 +27,8 @@ import java.util.regex.Pattern;
  * <p>This class is read-only with respect to {@link Game}: it queries game state
  * through the public API and never modifies it. All string literals and format
  * templates are sourced from {@link Messages}.
+ * 
+ * @author Rodrigo Ferrer López (extended {@link #showGame()} to show zombies on the right edge)
  */
 public class GamePrinter implements GameView {
 

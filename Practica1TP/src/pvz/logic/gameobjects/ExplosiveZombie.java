@@ -6,7 +6,7 @@ import pvz.logic.GameWorld;
 import pvz.logic.actions.ExplosionAction;
 
 /**
- * Basic zombie that explodes on death.
+ * Common zombie that explodes on death.
  * 
  * @author Rodrigo Ferrer López
  */

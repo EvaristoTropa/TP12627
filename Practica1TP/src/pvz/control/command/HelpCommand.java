@@ -5,7 +5,7 @@ import pvz.view.GameView;
 import pvz.view.Messages;
 
 /**
- * Command that shows how to use each command.
+ * Command that shows all available commands and how to use them.
  * 
  * @author Rodrigo Ferrer López
  */

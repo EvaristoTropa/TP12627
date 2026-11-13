@@ -82,7 +82,7 @@ public class Controller {
 	}
 
 	/**
-	 * Runs the game logic.
+	 * Runs the game logic through the use of commands.
 	 */
 	public void run() {
 		view.showGame();

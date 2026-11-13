@@ -10,7 +10,7 @@ import pvz.view.Messages;
 import utils.Position;
 
 /**
- * Command that adds a zombie in a specified position.
+ * Command that adds a zombie in a specified position (considered cheating).
  * 
  * @author Rodrigo Ferrer López
  */

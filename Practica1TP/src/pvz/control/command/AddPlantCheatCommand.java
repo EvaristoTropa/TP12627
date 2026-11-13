@@ -10,7 +10,7 @@ import pvz.view.Messages;
 import utils.Position;
 
 /**
- * Command that lets you add a plant without spending coins.
+ * Command that lets you add a plant without spending coins (considered cheating).
  * 
  * @author Rodrigo Ferrer López
  */

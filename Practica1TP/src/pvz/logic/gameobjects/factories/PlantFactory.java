@@ -28,6 +28,14 @@ public class PlantFactory {
 		new CherryBomb(null, null)
 	);
 	
+	/**
+	 * Creates a plant with a given name and parameters.
+	 * 
+	 * @param plantName Name of the plant to create, game Game where the plant will reside, position Position of the plant
+	 * 
+	 * @return the created plant if the creation was successful, null otherwise.
+	 */
+	
 	public static Plant spawnPlant(String plantName, GameWorld game, Position position) {
 		int i = 0;
 		while (i < AVAILABLE_PLANTS.size() && !AVAILABLE_PLANTS.get(i).matchPlant(plantName))
@@ -37,6 +45,12 @@ public class PlantFactory {
 		else
 			return null;
 	}
+	
+	/**
+	 * Fetches the types of plants available in the game.
+	 * 
+	 * @return an unmodifiable version of the list of plants.
+	 */
 	
 	public static List<Plant> getAvailablePlants() {
 		return Collections.unmodifiableList(AVAILABLE_PLANTS);

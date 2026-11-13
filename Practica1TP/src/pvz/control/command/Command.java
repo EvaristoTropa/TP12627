@@ -102,11 +102,11 @@ public abstract class Command {
 	abstract public boolean matchCommand(String command);
 	
 	/**
-	 * Creates a command and processes its parameters, if any.
+	 * Processes a command's parameters (if any) and creates a new instance of it, or a special error command if the parameters are invalid.
 	 * 
 	 * @param commandWords User prompt
 	 * 
-	 * @return the built command.
+	 * @return the new instance of the command (ErrorCommand if invalid parameters).
 	 */
 	
 	abstract public Command create(String[] commandWords);

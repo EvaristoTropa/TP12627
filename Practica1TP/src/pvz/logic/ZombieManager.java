@@ -9,12 +9,7 @@ import pvz.logic.gameobjects.factories.ZombieFactory;
 import utils.Position;
 
 /**
- * Manages the full lifecycle of zombies for a game session.
- *
- * <p>Responsibilities: deciding each cycle whether to spawn a new zombie
- * (probabilistically, subject to the remaining quota from {@link Level}),
- * delegating per-cycle updates and dead-removal to the underlying
- * {@link ZombieList}, and answering win/loss queries
+ * Manages the full lifecycle of zombies for a game session, deciding where to spawn them and keeping track of the zombies left to spawn and kill.
  *
  * @author Rodrigo Ferrer López (filled code);
  */

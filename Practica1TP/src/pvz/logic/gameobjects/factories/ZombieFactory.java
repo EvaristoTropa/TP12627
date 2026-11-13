@@ -28,6 +28,14 @@ public class ZombieFactory {
 		new ExplosiveZombie(null, null)
 	);
 	
+	/**
+	 * Creates a zombie with a given name and parameters.
+	 * 
+	 * @param zombieName Name of the zombie to create, game Game where the zombie will reside, position Position of the zombie
+	 * 
+	 * @return the created zombie if the creation was successful, null otherwise.
+	 */
+	
 	public static Zombie spawnZombie(String zombieName, GameWorld game, Position position) {
 		int i = 0;
 		while (i < AVAILABLE_ZOMBIES.size() && !AVAILABLE_ZOMBIES.get(i).matchZombie(zombieName))
@@ -37,6 +45,12 @@ public class ZombieFactory {
 		else
 		return null;
 	}
+	
+	/**
+	 * Fetches the types of zombies available in the game.
+	 * 
+	 * @return an unmodifiable version of the list of zombies.
+	 */
 	
 	public static List<Zombie> getAvailableZombies() {
 		return Collections.unmodifiableList(AVAILABLE_ZOMBIES);
