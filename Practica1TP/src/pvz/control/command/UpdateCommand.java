@@ -1,5 +1,6 @@
 package pvz.control.command;
 
+import pvz.control.exceptions.CommandParseException;
 import pvz.logic.GameModel;
 import pvz.view.GameView;
 import pvz.view.Messages;
@@ -7,7 +8,7 @@ import pvz.view.Messages;
 /**
  * Command that skips the player's turn and updates the game.
  * 
- * @author Rodrigo Ferrer López
+ * @author Rodrigo Ferrer López & Rodrigo Domínguez Carramal
  */
 
 public class UpdateCommand extends Command {
@@ -24,11 +25,11 @@ public class UpdateCommand extends Command {
 	}
 	
 	@Override
-	public Command create(String[] commandWords) {
+	public Command create(String[] commandWords) throws CommandParseException {
 		if (commandWords.length <= 1)
 			return this;
 		else
-			return new ErrorCommand(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
+			throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
 	}
 	
 	@Override

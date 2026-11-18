@@ -1,5 +1,9 @@
 package pvz.control.command;
 
+import pvz.control.exceptions.CommandExecuteException;
+import pvz.control.exceptions.CommandParseException;
+import pvz.control.exceptions.InvalidPositionException;
+import pvz.control.exceptions.NotCatchablePositionException;
 import pvz.logic.GameModel;
 import pvz.view.GameView;
 import pvz.view.Messages;
@@ -8,7 +12,7 @@ import utils.Position;
 /**
  * Command that catches all suns in a given position.
  * 
- * @author Rodrigo Ferrer López
+ * @author Rodrigo Ferrer López & Rodrigo Domínguez Carramal
  */
 
 public class CatchCommand extends Command {
@@ -28,24 +32,24 @@ public class CatchCommand extends Command {
 	}
 	
 	@Override
-	public Command create(String[] commandWords) {
+	public Command create(String[] commandWords) throws CommandParseException {
 		if (commandWords.length == 3) {
 			Position newPosition = new Position(Integer.parseInt(commandWords[2]), Integer.parseInt(commandWords[1]));
 			return new CatchCommand(newPosition);
 		}
 		else if (commandWords.length < 3)
-			return new ErrorCommand(Messages.COMMAND_PARAMETERS_MISSING);
+			throw new CommandParseException(Messages.COMMAND_PARAMETERS_MISSING);
 		else
-			return new ErrorCommand(Messages.INVALID_COMMAND);
+			throw new CommandParseException(Messages.INVALID_COMMAND);
 	}
 	
 	@Override
-	public void execute(GameModel model, GameView view) {
+	public void execute(GameModel model, GameView view) throws CommandExecuteException{
 		if (!model.isInsideBoard(position))
-			view.showError(Messages.INVALID_POSITION);
+			throw new InvalidPositionException(Messages.INVALID_POSITION, position.column(), position.row());
 		else if (!model.catchUsed()) {
 		if (!model.catchObject(position))
-			view.showError(Messages.NO_CATCHABLE_IN_POSITION.formatted(position.column(), position.row()));
+			throw new NotCatchablePositionException(Messages.NO_CATCHABLE_IN_POSITION.formatted(position.column(), position.row()), position.column(), position.row());
 		else
 			view.showGame();
 		}

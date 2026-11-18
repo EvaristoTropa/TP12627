@@ -2,6 +2,8 @@ package pvz.control.command;
 
 import java.util.List;
 
+import pvz.control.exceptions.CommandParseException;
+import pvz.control.exceptions.InvalidPositionException;
 import pvz.logic.GameModel;
 import pvz.logic.gameobjects.Plant;
 import pvz.logic.gameobjects.factories.PlantFactory;
@@ -12,7 +14,7 @@ import utils.Position;
 /**
  * Command that adds a plant in a specified position.
  * 
- * @author Rodrigo Ferrer López
+ * @author Rodrigo Ferrer López & Rodrigo Domínguez Carramal
  */
 
 public class AddPlantCommand extends Command {
@@ -34,7 +36,7 @@ public class AddPlantCommand extends Command {
 	}
 	
 	@Override
-	public Command create(String[] commandWords) {
+	public Command create(String[] commandWords) throws CommandParseException {
 		if (commandWords.length == 4) {
 			String newPlantName = commandWords[1];
 			int i = 0;
@@ -46,18 +48,18 @@ public class AddPlantCommand extends Command {
 				return new AddPlantCommand(newPlantName, newPosition);
 			}
 			else
-				return new ErrorCommand(Messages.INVALID_GAME_OBJECT);
+				throw new CommandParseException(Messages.INVALID_GAME_OBJECT);
 		}
 		else if (commandWords.length < 4)
-			return new ErrorCommand(Messages.COMMAND_PARAMETERS_MISSING);
+			throw new CommandParseException(Messages.COMMAND_PARAMETERS_MISSING);
 		else
-			return new ErrorCommand(Messages.INVALID_COMMAND);
+			throw new CommandParseException(Messages.INVALID_COMMAND);
 	}
 	
 	@Override
-	public void execute(GameModel model, GameView view) {
+	public void execute(GameModel model, GameView view) throws InvalidPositionException{
 		if (!model.isValidPosition(position))
-			view.showError(Messages.INVALID_POSITION);
+			throw new InvalidPositionException(Messages.INVALID_POSITION, position.column(), position.row());
 		else {
 			int i = 0;
 			List<Plant> plants = PlantFactory.getAvailablePlants();

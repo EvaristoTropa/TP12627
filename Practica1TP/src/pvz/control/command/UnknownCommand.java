@@ -1,5 +1,6 @@
 package pvz.control.command;
 
+import pvz.control.exceptions.CommandParseException;
 import pvz.logic.GameModel;
 import pvz.view.GameView;
 import pvz.view.Messages;
@@ -7,7 +8,7 @@ import pvz.view.Messages;
 /**
  * "Command" that represents invalid commands.
  * 
- * @author Rodrigo Ferrer López
+ * @author Rodrigo Ferrer López & Rodrigo Domínguez Carramal
  */
 
 public class UnknownCommand extends Command {
@@ -20,7 +21,10 @@ public class UnknownCommand extends Command {
 	}
 	
 	@Override
-	public Command create(String[] commandWords) {
+	public Command create(String[] commandWords) throws CommandParseException {
+		if (commandWords.length != 0) {
+		    throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
+		  }
 		return this;
 	}
 	

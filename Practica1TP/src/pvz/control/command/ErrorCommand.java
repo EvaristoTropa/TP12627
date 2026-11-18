@@ -1,12 +1,14 @@
 package pvz.control.command;
 
+import pvz.control.exceptions.CommandParseException;
 import pvz.logic.GameModel;
 import pvz.view.GameView;
+import pvz.view.Messages;
 
 /**
  * "Command" that shows an error message (cannot be executed directly by the user).
  * 
- * @author Rodrigo Ferrer López
+ * @author Rodrigo Ferrer López & Rodrigo Domínguez Carramal
  */
 
 public class ErrorCommand extends Command {
@@ -22,7 +24,10 @@ public class ErrorCommand extends Command {
 	}
 	
 	@Override
-	public Command create(String[] commandWords) {
+	public Command create(String[] commandWords) throws CommandParseException {
+		 if (commandWords.length != 0) {
+			    throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
+			  }
 		return this;
 	}
 	

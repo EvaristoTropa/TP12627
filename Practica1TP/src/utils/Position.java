@@ -40,32 +40,6 @@ public class Position {
     }
     
     /**
-     * Checks if two positions are in the same row.
-     * 
-     * @param p Position to compare
-     * 
-     * @return <code>true</code> if both positions' row components match.
-     */
-    
-    /*
-    public boolean isHorizontallyAligned(Position p) {
-        return row == p.row;
-    }
-    */
-    
-    /**
-     * Checks if two positions are in the same column.
-     * 
-     * @param p Position to compare
-     * 
-     * @return <code>true</code> if both positions' column components match.
-     */
-    
-    public boolean isVerticallyAligned(Position p) {
-        return col == p.col;
-    }
-    
-    /**
      * Converts a position to string format.
      * 
      * @return a string containing the position's row and column.

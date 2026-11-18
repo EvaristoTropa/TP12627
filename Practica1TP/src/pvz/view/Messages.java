@@ -55,9 +55,15 @@ public class Messages {
 
 	public static final String COMMAND_INCORRECT_PARAMETER_NUMBER = "Incorrect parameter number";
 
+	public static final String INVALID_LEVEL = "Invalid level";
+
+	public static final String INVALID_SEED = "Invalid seed";
+
 	public static final String INVALID_POSITION = "Invalid position";
 
-	public static final String INVALID_GAME_OBJECT = String.format("Invalid object%n");
+	public static final String ALREADY_OCCUPIED_POSITION = "This position is already occupied";
+
+	public static final String INVALID_GAME_OBJECT = "Invalid object: %s";
 
 	public static final String INVALID_COMMAND = "Invalid command";
 
@@ -79,9 +85,8 @@ public class Messages {
 
 	public static final String ZOMBIE_SYMBOL = "Z";
 	public static final String ZOMBIE_NAME = "Zombie";
-	public static final String ZOMBIE_DESCRIPTION = "%s: speed='%d', damage='%d', endurance='%d'";
 	public static final String ZOMBIE_ICON = " Z[%02d]";
-	public static final String ZOMBIE_NAME_AND_SHORTCUT = "[Z]ombie";
+	public static final String ZOMBIE_DESCRIPTION = "%s: speed='%d', damage='%d', endurance='%d'";
 
 	public static final String WALL_NUT_SYMBOL = "WN";
 	public static final String WALL_NUT_NAME = "Wall-Nut";
@@ -112,6 +117,8 @@ public class Messages {
 	public static final String GENERATED_SUNS = "Generated suns: %d%n";
 
 	public static final String CAUGHT_SUNS = "Caught suns: %d%n";
+
+	public static final String POINTS = "Score: %d%n";
 
 	public static final String REMAINING_ZOMBIES = "Remaining zombies: %d%n";
 	
@@ -148,9 +155,7 @@ public class Messages {
 
 	public static final String COMMAND_RESET_NAME = "reset";
 	public static final String COMMAND_RESET_SHORTCUT = "r";
-	// public static final String COMMAND_RESET_DETAILS = "[r]eset";
 	public static final String COMMAND_RESET_DETAILS = "[r]eset [<level> <seed>]";
-	//public static final String COMMAND_RESET_HELP = "start a new game";
 	public static final String COMMAND_RESET_HELP = "start a new game (if level and seed are both provided, they are used to initialize the game)";
 
 	public static final String COMMAND_HELP_NAME = "help";
@@ -178,8 +183,20 @@ public class Messages {
 	public static final String COMMAND_CATCH_DETAILS = "[C]atch <col> <row>";
 	public static final String COMMAND_CATCH_HELP = "catch a sun, if possible, in position (col, row)";
 
-	public static final String NO_CATCHABLE_IN_POSITION = "No sun in (%d, %d)";
+	public static final String COMMAND_RECORD_NAME = "record";
+	public static final String COMMAND_RECORD_SHORTCUT = "o";
+	public static final String COMMAND_RECORD_DETAILS = "Rec[o]rd";
+	public static final String COMMAND_RECORD_HELP = "show record of the current level";
 
+	public static final String RECORD = "%s record is %d";
+
+	public static final String RECORD_FILE_NOT_FOUND = "Record file '%s' does not exist";
+	public static final String RECORD_FILE_NOT_READABLE = "Record file '%s' cannot be read";
+	public static final String RECORD_FILE_CORRUPTED = "Record file '%s' is corrupted: invalid line '%s'";
+	public static final String RECORD_FILE_NOT_WRITABLE = "Record file '%s' cannot be written";
+
+	public static final String NO_CATCHABLE_IN_POSITION = "No sun in (%d, %d)";
+	public static final String ALREADY_CAUGHT_SUN = "A sun has been caught in this cycle";
 	/**
 	 * Formats a debug message.
 	 * 

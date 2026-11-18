@@ -69,6 +69,7 @@ public class ExplosiveZombie extends Zombie {
 		ExplosionAction explosion = new ExplosionAction(3, false, positions);
 		game.pushAction(explosion);
 		game.zombieKilled();
+		game.addScore(blownUp?20:10);
 	}
 	
 	public void onEnter() {}

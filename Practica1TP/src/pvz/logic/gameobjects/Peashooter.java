@@ -2,92 +2,64 @@ package pvz.logic.gameobjects;
 
 import pvz.view.Messages;
 import utils.Position;
-import pvz.logic.Game;
+import pvz.logic.GameWorld;
 
 /**
+ * Plant that shoots zombies in a straight line.
  * 
- * 
- * @author Rodrigo Domínguez Carramal
+ * @author Rodrigo Domínguez Carramal (V1), Rodrigo Ferrer López (V2)
  */
 
-
-public class Peashooter {
-
-	private Position pos;
-	private Game game;
-	private int hp;
-	private int cooldown;
-	public static final int DAMAGE = 1, FRECUENCY = 1, ENDURANCE = 3;
-	private static final String shortn = "p", longn = "peashooter", desc = "Dispara guisantes a los zombis causándoles daño.\n";
-	
-	private void attack() {
-		
-		int z = pos.row();
-		int i = pos.column() + 1;
-		Position target = new Position(z, i);
-		while(i < game.NUM_COLS && game.isEmpty(target)) {
-			i++;
-			target = new Position(z, i);
-		}
-		if(i< game.NUM_COLS) {
-			game.attackZombie(target, DAMAGE);
-		}
-		
-	}
-	
-	
+public class Peashooter extends Plant {
 	public static final int COST = 50;
 	
-	public Peashooter(Position pos, Game game) {
-		
-		this.pos = pos;
-		this.game = game;
-		this.cooldown = 0;
-		this.hp = ENDURANCE;
+	public Peashooter(Position position, GameWorld game) {
+		super(position, game, COST, 1, 3);
+		this.symbol = Messages.PEASHOOTER_SYMBOL;
+		this.name = Messages.PEASHOOTER_NAME;
+		this.nas = Messages.PEASHOOTER_NAME_AND_SHORTCUT;
 	}
 	
-	
-	
-	public static String shortName() {
-		return shortn;
+	public Plant copy(Position position, GameWorld game) {
+		return new Peashooter(position, game);
 	}
 	
-	public static String longName() {
-		return longn;
+	public String getName() {
+		return name;
 	}
 	
-	public static String getDescription() {
-		return desc;
+	public String getSymbol() {
+		return symbol;
+	}
+	
+	public String getIcon() {
+		return Messages.PEASHOOTER_ICON.formatted(hp);
+	}
+	
+	public String getDescription() {
+		return Messages.PEASHOOTER_DESCRIPTION.formatted(cost, damage, endurance);
+	}
+	
+	public int getCost() {
+		return cost;
+	}
+	
+	public int getDamage() {
+		return damage;
+	}
+	
+	public int getEndurance() {
+		return endurance;
 	}
 	
 	public void update() {
-		
-		if(!isAlive()) {
-			cooldown++;
-			if(cooldown>=FRECUENCY) {
-				attack();
-				cooldown = 0;
-			}
+		if (isAlive()) {
+			Position targetPos = position;
+			while (targetPos.column() < GameWorld.NUM_COLS && !game.plantAttack(targetPos, damage))
+			targetPos = targetPos.right();
 		}
 	}
-
-	public boolean isInPosition(Position p) {
-
-		return pos == p;
-	}
-
-	public void receiveDamage(int damage) {
-		
-		hp -= damage;
-	}
-
-	public boolean isAlive() {
-
-		return hp > 0;
-	}
 	
-public String getIcon() {
-		
-		return Messages.PEASHOOTER_ICON.formatted(hp);
-	}
+	public void onEnter() {}
+	public void onExit() {}
 }

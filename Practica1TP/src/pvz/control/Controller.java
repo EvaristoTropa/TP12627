@@ -1,6 +1,7 @@
 package pvz.control;
 
 import pvz.control.command.Command;
+import pvz.control.exceptions.GameException;
 import pvz.logic.Game;
 import pvz.view.GamePrinter;
 import pvz.view.GameView;
@@ -88,8 +89,13 @@ public class Controller {
 		view.showGame();
 		while(!game.hasGameFinished() && !game.playerQuits()) {
 			String[] words = view.getPrompt();
-			Command command = Command.parse(words);
-			command.execute(game, view);
+			try{ 
+				Command command = Command.parse(words);
+				command.execute(game, view);
+			} catch (GameException e) {
+				view.showError(e.getMessage());
+			}
+			
 		}
 		view.showEndMessage();
 	}

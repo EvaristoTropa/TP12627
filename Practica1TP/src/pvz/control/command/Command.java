@@ -5,6 +5,8 @@ import java.util.Arrays;
 
 import pvz.logic.GameModel;
 import pvz.view.GameView;
+import pvz.view.Messages;
+import pvz.control.exceptions.*;
 
 /**
  * Implementation of the Command pattern.
@@ -41,14 +43,14 @@ public abstract class Command {
 	 * @return the corresponding command if it matches, or null if there's no match.
 	 */
 	
-	public static Command parse(String[] commandWords) {
+	public static Command parse(String[] commandWords) throws CommandParseException{
 		int i = 0;
 		while (i < AVAILABLE_COMMANDS.size() && !AVAILABLE_COMMANDS.get(i).matchCommand(commandWords[0]))
 			i++;
 		if (i < AVAILABLE_COMMANDS.size())
 			return AVAILABLE_COMMANDS.get(i).create(commandWords);
 		else
-			return new UnknownCommand();
+			throw new CommandParseException(Messages.UNKNOWN_COMMAND);
 	}
 	
 	/**
@@ -109,7 +111,7 @@ public abstract class Command {
 	 * @return the new instance of the command (ErrorCommand if invalid parameters).
 	 */
 	
-	abstract public Command create(String[] commandWords);
+	abstract public Command create(String[] commandWords) throws CommandParseException;
 	
 	/**
 	 * Carries out the command's actions in the game.
@@ -117,5 +119,5 @@ public abstract class Command {
 	 * @param model Game where actions are executed, view View where messages are shown
 	 */
 	
-	abstract public void execute(GameModel model, GameView view);
+	abstract public void execute(GameModel model, GameView view) throws CommandExecuteException;
 }

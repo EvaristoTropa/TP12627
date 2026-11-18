@@ -2,6 +2,7 @@ package pvz.control.command;
 
 import pvz.logic.gameobjects.Zombie;
 import pvz.logic.gameobjects.factories.ZombieFactory;
+import pvz.control.exceptions.CommandParseException;
 import pvz.logic.GameModel;
 import pvz.view.GameView;
 import pvz.view.Messages;
@@ -9,7 +10,7 @@ import pvz.view.Messages;
 /**
  * Command that shows what zombies you can add.
  * 
- * @author Rodrigo Ferrer López
+ * @author Rodrigo Ferrer López & Rodrigo Domínguez Carramal
  */
 
 public class ListZombiesCommand extends Command {
@@ -26,13 +27,13 @@ public class ListZombiesCommand extends Command {
 	}
 	
 	@Override
-	public Command create(String[] commandWords) {
+	public Command create(String[] commandWords) throws CommandParseException {
 		if (commandWords.length == 1)
 			return this;
 		else if (commandWords.length < 1)
-			return new ErrorCommand(Messages.COMMAND_PARAMETERS_MISSING);
+			throw new CommandParseException(Messages.COMMAND_PARAMETERS_MISSING);
 		else
-			return new ErrorCommand(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
+			throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
 	}
 	
 	@Override

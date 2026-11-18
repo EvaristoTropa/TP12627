@@ -1,5 +1,6 @@
 package pvz.control.command;
 
+import pvz.control.exceptions.CommandParseException;
 import pvz.logic.GameModel;
 import pvz.view.GameView;
 import pvz.view.Messages;
@@ -7,7 +8,7 @@ import pvz.view.Messages;
 /**
  * Command that shows all available commands and how to use them.
  * 
- * @author Rodrigo Ferrer López
+ * @author Rodrigo Ferrer López & Rodrigo Domínguez Carramal
  */
 
 public class HelpCommand extends Command {
@@ -24,13 +25,13 @@ public class HelpCommand extends Command {
 	}
 	
 	@Override
-	public Command create(String[] commandWords) {
+	public Command create(String[] commandWords) throws CommandParseException {
 		if (commandWords.length == 1)
 			return this;
 		else if (commandWords.length < 1)
-			return new ErrorCommand(Messages.COMMAND_PARAMETERS_MISSING);
+			throw new CommandParseException(Messages.COMMAND_PARAMETERS_MISSING);
 		else
-			return new ErrorCommand(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
+			throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
 	}
 	
 	@Override

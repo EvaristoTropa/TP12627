@@ -1,6 +1,7 @@
 package pvz.control.command;
 
 import pvz.control.Level;
+import pvz.control.exceptions.CommandParseException;
 import pvz.logic.GameModel;
 import pvz.view.GameView;
 import pvz.view.Messages;
@@ -8,7 +9,7 @@ import pvz.view.Messages;
 /**
  * Command that resets the game to its initial parameters.
  * 
- * @author Rodrigo Ferrer López
+ * @author Rodrigo Ferrer López & Rodrigo Domínguez Carramal
  */
 
 public class ResetCommand extends Command {
@@ -30,7 +31,7 @@ public class ResetCommand extends Command {
 	}
 	
 	@Override
-	public Command create(String[] commandWords) {
+	public Command create(String[] commandWords) throws CommandParseException {
 		if (commandWords.length == 3) {
 			Level newLevel = Level.valueOfIgnoreCase(commandWords[1]);
 			long newSeed = Integer.toUnsignedLong(Integer.parseInt(commandWords[2]));
@@ -39,7 +40,7 @@ public class ResetCommand extends Command {
 		else if (commandWords.length == 1)
 			return new ResetCommand(null, 0L);
 		else
-			return new ErrorCommand(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
+			throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
 	}
 	
 	@Override

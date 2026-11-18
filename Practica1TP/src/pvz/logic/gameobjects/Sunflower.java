@@ -1,75 +1,70 @@
 package pvz.logic.gameobjects;
 
-import pvz.logic.Game;
 import pvz.view.Messages;
 import utils.Position;
+import pvz.logic.GameWorld;
 
 /**
+ * Plant that passively generates suns.
  * 
- * 
- * @author Rodrigo Domínguez Carramal
+ * @author Rodrigo Domínguez Carramal (V1), Rodrigo Ferrer López (V2)
  */
 
-
-public class Sunflower {
-	
-	private Position pos;
-	private Game game;
-	private int hp;
-	private int cooldown;
-	public static final int DAMAGE = 0, FRECUENCY = 3, ENDURANCE = 1;
-	private static final String shortn = "s", longn = "sunflower", desc = "Genera soles.\n";
-	
-	
+public class Sunflower extends Plant {
+	private int counter = 0;
+	private static final int PERIOD = 3;
 	public static final int COST = 20;
 	
-	public Sunflower(Position pos, Game g) {
-		this.pos = pos;
-		this.game = g;
-		this.hp = ENDURANCE;
-		this.cooldown = 0;
+	public Sunflower(Position position, GameWorld game) {
+		super(position, game, COST, 0, 1);
+		this.symbol = Messages.SUNFLOWER_SYMBOL;
+		this.name = Messages.SUNFLOWER_NAME;
+		this.nas = Messages.SUNFLOWER_NAME_AND_SHORTCUT;
+		this.counter = 0;
 	}
 	
-	public static String shortName() {
-		return shortn;
+	public Plant copy(Position position, GameWorld game) {
+		return new Sunflower(position, game);
 	}
 	
-	public static String longName() {
-		return longn;
+	public String getName() {
+		return name;
 	}
 	
-	public static String getDescription() {
-		return desc;
-	}
-	
-	public void update() {
-		if(!isAlive()) {
-			cooldown++;
-			if(cooldown >= FRECUENCY) {
-				game.generateCoins(10);
-				cooldown = 0;
-			}
-		}
-	}
-
-	public boolean isInPosition(Position p) {
-
-		return pos == p;
-	}
-
-	public void receiveDamage(int damage) {
-		
-		hp -= damage;
-	}
-
-	public boolean isAlive() {
-
-		return hp > 0;
+	public String getSymbol() {
+		return symbol;
 	}
 	
 	public String getIcon() {
-		
 		return Messages.SUNFLOWER_ICON.formatted(hp);
 	}
-
+	
+	public String getDescription() {
+		return Messages.SUNFLOWER_DESCRIPTION.formatted(cost, damage, endurance);
+	}
+	
+	public int getCost() {
+		return cost;
+	}
+	
+	public int getDamage() {
+		return damage;
+	}
+	
+	public int getEndurance() {
+		return endurance;
+	}
+	
+	public void update() {
+		if (isAlive()) {
+			if (counter >= PERIOD) {
+				game.generateSun();
+				counter = 0;
+			}
+			counter++;
+		}
+	}
+	
+	public void onEnter() {}
+	public void onExit() {}
 }

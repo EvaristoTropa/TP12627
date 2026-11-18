@@ -39,6 +39,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	private int sun_counter;
 	private boolean playerQuits;
 	private boolean catchUsed;
+	private int score;
 	
 	public Game (long seed, Level level) {
 		reset(level, seed);
@@ -104,6 +105,16 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	
 	public int getCaughtCoins() {
 		return caughtSuns;
+	}
+	
+	/**
+	 * Fetches total score from killing zombies of this game
+	 * 
+	 * @return game score
+	 */
+	
+	public int getScore() {
+		return score;
 	}
 	
 	/**
@@ -484,5 +495,9 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	
 	public boolean anyInColumn(int column) {
 		return container.anyInColumn(column);
+	}
+	
+	public void addScore(int killscore) {
+		score += killscore;
 	}
 }

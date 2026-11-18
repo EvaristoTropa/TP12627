@@ -56,6 +56,7 @@ public class BucketHeadZombie extends Zombie {
 	
 	public void onExit() {
 		game.zombieKilled();
+		game.addScore(blownUp?20:10);
 	}
 	
 	public void onEnter() {}
